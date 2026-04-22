@@ -1,0 +1,18 @@
+{
+  "type": "object",
+  "required": [
+    "approved",
+    "module_file",
+    "unit_tests_present",
+    "integration_tests_present"
+  ],
+  "properties": {
+    "approved": {"type": "boolean"},
+    "module_file": {"type": "string"},
+    "unit_tests_present": {"type": "boolean"},
+    "integration_tests_present": {"type": "boolean"},
+    "coverage_gaps": {"type": "array"},
+    "quality_issues": {"type": "array"},
+    "feedback": {"type": "string"}
+  }
+}

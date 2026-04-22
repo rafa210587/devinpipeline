@@ -1,0 +1,16 @@
+﻿{
+  "name": "Project Alpha",
+  "slug": "project_alpha",
+  "profile": "generic",
+  "description": "Example seed for V2 package smoke run.",
+  "goals": [
+    "Demonstrate end-to-end run"
+  ],
+  "requirements": [
+    "Produce structured outputs from P1 to P5"
+  ],
+  "brainstorm": "Build a small service with clear contracts and docs.",
+  "constraints": [
+    "Python 3.11"
+  ]
+}

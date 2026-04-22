@@ -1,0 +1,21 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "required": ["observability_plan"],
+  "properties": {
+    "observability_plan": {
+      "type": "object",
+      "properties": {
+        "metrics": {"type": "array", "items": {"type": "string"}},
+        "logs": {"type": "array", "items": {"type": "string"}},
+        "traces": {"type": "array", "items": {"type": "string"}},
+        "dashboards": {"type": "array", "items": {"type": "string"}},
+        "alerts": {"type": "array", "items": {"type": "string"}},
+        "runbooks": {"type": "array", "items": {"type": "string"}},
+        "slo_sli": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "task_injections": {"type": "array"},
+    "coverage_notes": {"type": "array", "items": {"type": "string"}}
+  }
+}

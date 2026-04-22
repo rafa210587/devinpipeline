@@ -1,0 +1,53 @@
+{
+  "type": "object",
+  "required": [
+    "pm_id",
+    "approved",
+    "specificity_score"
+  ],
+  "properties": {
+    "pm_id": {
+      "type": "string"
+    },
+    "approved": {
+      "type": "boolean"
+    },
+    "rejection_reason": {
+      "type": "string"
+    },
+    "specificity_score": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 10
+    },
+    "redundancy_flags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "actionability_score": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 10
+    },
+    "out_of_scope_questions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "role_violations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "summary": {
+      "type": "string"
+    },
+    "feedback_for_pm": {
+      "type": "string"
+    }
+  }
+}

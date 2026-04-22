@@ -1,0 +1,16 @@
+﻿{
+  "jobs": [
+    {
+      "name": "proj_alpha_full",
+      "pipeline": "full",
+      "input_path": "./examples/seed_alpha.json",
+      "output_dir": "./output/proj_alpha"
+    },
+    {
+      "name": "proj_beta_full",
+      "pipeline": "full",
+      "input_path": "./examples/seed_beta.json",
+      "output_dir": "./output/proj_beta"
+    }
+  ]
+}

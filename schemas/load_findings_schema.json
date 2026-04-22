@@ -1,0 +1,15 @@
+{
+  "type": "object",
+  "required": [
+    "approved",
+    "files_analyzed",
+    "findings",
+    "summary"
+  ],
+  "properties": {
+    "approved": {"type": "boolean"},
+    "files_analyzed": {"type": "integer"},
+    "findings": {"type": "array"},
+    "summary": {"type": "string"}
+  }
+}

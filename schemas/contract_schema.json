@@ -1,0 +1,71 @@
+{
+  "type": "object",
+  "required": [
+    "file",
+    "module_summary"
+  ],
+  "properties": {
+    "file": {
+      "type": "string"
+    },
+    "module_summary": {
+      "type": "string"
+    },
+    "definition_order": {
+      "type": "array",
+      "maxItems": 6,
+      "items": {
+        "type": "string"
+      }
+    },
+    "required_globals": {
+      "type": "array",
+      "maxItems": 4,
+      "items": {
+        "type": "string"
+      }
+    },
+    "required_helpers": {
+      "type": "array",
+      "maxItems": 5,
+      "items": {
+        "type": "string"
+      }
+    },
+    "small_classes": {
+      "type": "array",
+      "maxItems": 4,
+      "items": {
+        "type": "string"
+      }
+    },
+    "allowed_external_imports": {
+      "type": "array",
+      "maxItems": 5,
+      "items": {
+        "type": "string"
+      }
+    },
+    "integration_points": {
+      "type": "array",
+      "maxItems": 4,
+      "items": {
+        "type": "string"
+      }
+    },
+    "build_notes": {
+      "type": "array",
+      "maxItems": 6,
+      "items": {
+        "type": "string"
+      }
+    },
+    "test_focus": {
+      "type": "array",
+      "maxItems": 5,
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}

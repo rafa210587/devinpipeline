@@ -1,0 +1,39 @@
+{
+  "type": "object",
+  "required": [
+    "decisions",
+    "publication_actions",
+    "rejections",
+    "summary"
+  ],
+  "properties": {
+    "decisions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "item_id",
+          "item_type",
+          "target_scope",
+          "approved",
+          "reason",
+          "confidence"
+        ],
+        "properties": {
+          "item_id": {"type": "string"},
+          "item_type": {"type": "string"},
+          "target_scope": {
+            "type": "string",
+            "enum": ["project", "global"]
+          },
+          "approved": {"type": "boolean"},
+          "reason": {"type": "string"},
+          "confidence": {"type": "number", "minimum": 0, "maximum": 1}
+        }
+      }
+    },
+    "publication_actions": {"type": "array"},
+    "rejections": {"type": "array"},
+    "summary": {"type": "string"}
+  }
+}

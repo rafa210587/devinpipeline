@@ -1,0 +1,35 @@
+{
+  "type": "object",
+  "required": [
+    "files"
+  ],
+  "properties": {
+    "files": {
+      "type": "object",
+      "required": [
+        "README",
+        "ARCHITECTURE"
+      ],
+      "properties": {
+        "README": {
+          "type": "string"
+        },
+        "ARCHITECTURE": {
+          "type": "string"
+        },
+        "RUNBOOK": {
+          "type": "string"
+        }
+      }
+    },
+    "generated_sections": {
+      "type": "object"
+    },
+    "notes": {
+      "type": "string"
+    },
+    "items_skipped": {
+      "type": "array"
+    }
+  }
+}

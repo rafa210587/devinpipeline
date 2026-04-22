@@ -1,0 +1,47 @@
+{
+  "type": "object",
+  "required": [
+    "quorum_id",
+    "decision",
+    "reasoning",
+    "decided_in_favor_of",
+    "binding"
+  ],
+  "properties": {
+    "quorum_id": {
+      "type": "string"
+    },
+    "decision": {
+      "type": "string"
+    },
+    "reasoning": {
+      "type": "string"
+    },
+    "decided_in_favor_of": {
+      "type": "string",
+      "enum": [
+        "builder",
+        "architect",
+        "neutral"
+      ]
+    },
+    "guardrail_reference": {
+      "type": "string"
+    },
+    "task_criterion_supported": {
+      "type": "string"
+    },
+    "applies_to": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "alternative_considered_and_rejected": {
+      "type": "object"
+    },
+    "binding": {
+      "type": "boolean"
+    }
+  }
+}

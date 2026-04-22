@@ -1,0 +1,11 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "required": ["approved_episodic", "approved_semantic", "rejected"],
+  "properties": {
+    "approved_episodic": {"type": "array"},
+    "approved_semantic": {"type": "array"},
+    "rejected": {"type": "array"},
+    "merge_suggestions": {"type": "array"}
+  }
+}

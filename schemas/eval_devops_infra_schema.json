@@ -1,0 +1,18 @@
+{
+  "type": "object",
+  "required": [
+    "approved",
+    "file",
+    "fidelity_ok"
+  ],
+  "properties": {
+    "approved": {"type": "boolean"},
+    "file": {"type": "string"},
+    "fidelity_ok": {"type": "boolean"},
+    "security_issues": {"type": "array"},
+    "idempotency_issues": {"type": "array"},
+    "state_and_rollback_issues": {"type": "array"},
+    "quorum_issues": {"type": "array"},
+    "feedback": {"type": "string"}
+  }
+}

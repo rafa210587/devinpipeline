@@ -1,0 +1,142 @@
+{
+  "devin": {
+    "api_base": "https://api.devin.ai",
+    "org_id": "${DEVIN_ORG_ID}",
+    "api_key": "${DEVIN_API_KEY}",
+    "endpoints": {
+      "create_session": "/v3/organizations/{org_id}/sessions",
+      "get_session": "/v3/organizations/{org_id}/sessions/{session_id}",
+      "send_message_candidates": [
+        "/v3/organizations/{org_id}/sessions/{session_id}/messages",
+        "/v3beta1/organizations/{org_id}/sessions/{session_id}/messages"
+      ],
+      "terminate_session": "/v3/organizations/{org_id}/sessions/{session_id}"
+    },
+    "terminate_http_method": "DELETE",
+    "terminate_archive": false,
+    "terminal_statuses": [
+      "exit",
+      "error",
+      "suspended"
+    ]
+  },
+  "playbooks": {
+    "intake": "${PLAYBOOK_INTAKE_ORCHESTRATOR}",
+    "brief": "${PLAYBOOK_BRIEF_ORCHESTRATOR}",
+    "tech": "${PLAYBOOK_TECH_ORCHESTRATOR}",
+    "build": "${PLAYBOOK_BUILD_ORCHESTRATOR}",
+    "validate": "${PLAYBOOK_VALIDATION_ORCHESTRATOR}",
+    "docs": "${PLAYBOOK_DOCS_ORCHESTRATOR}",
+    "learning": "${PLAYBOOK_LEARNING_ORCHESTRATOR}"
+  },
+  "arr": {
+    "url": "${ARR_URL}",
+    "branch": "main"
+  },
+  "runtime": {
+    "poll_interval_seconds": 15,
+    "gate_wait_seconds": 1800,
+    "waiting_status_details": [
+      "waiting_for_user",
+      "waiting_for_approval"
+    ],
+    "waiting_detail_timeout_seconds": 1800,
+    "session_defaults": {
+      "repos": [],
+      "knowledge_ids": [],
+      "secret_ids": [],
+      "bypass_approval": false,
+      "use_repo_manifest_as_repos": false
+    },
+    "max_wait_seconds": {
+      "intake": 1800,
+      "brief": 7200,
+      "tech": 5400,
+      "build": 14400,
+      "validate": 7200,
+      "docs": 3600,
+      "learning": 3600
+    },
+    "p0": {
+      "enabled": true,
+      "default_route_mode": "seed_to_brief",
+      "allow_pre_briefed": true
+    },
+    "learning": {
+      "enabled": false,
+      "max_wait_seconds": 3600
+    },
+    "tracking": {
+      "enabled": true,
+      "execution_md": "execution_tracking.md",
+      "dilemmas_md": "dilemmas_and_solutions.md",
+      "sessions_jsonl": "coordinator_sessions.jsonl",
+      "events_jsonl": "tracking_events.jsonl"
+    },
+    "memory": {
+      "enabled": true,
+      "episodic_jsonl": "memory/episodic_memory.jsonl",
+      "semantic_jsonl": "memory/semantic_memory_candidates.jsonl",
+      "summary_md": "memory/MEMORY_LOG.md"
+    },
+    "human_gates": {
+      "after_p1": false,
+      "after_p2": false,
+      "after_p4": false
+    },
+    "transport": {
+      "mode": "http",
+      "mcp": {
+        "base_url": "${DEVIN_MCP_BASE_URL}",
+        "tool_call_endpoint": "${DEVIN_MCP_TOOL_CALL_ENDPOINT}",
+        "auth_token": "${DEVIN_MCP_AUTH_TOKEN}",
+        "payload_mode": "tool_gateway",
+        "timeout_seconds": 60,
+        "tools": {
+          "create_session": "devin_session_create",
+          "get_session": "devin_session_get",
+          "send_message": "devin_session_interact",
+          "terminate_session": "devin_session_terminate"
+        }
+      }
+    },
+    "eval_metrics": {
+      "enabled": true,
+      "report_mode": "deterministic",
+      "json_file": "eval_metrics.json",
+      "markdown_file": "eval_metrics_report.md",
+      "history_jsonl": "eval_metrics_history.jsonl",
+      "ground_truth_file": "eval_ground_truth.json",
+      "promote_to_shared": true
+    }
+  },
+  "storage": {
+    "mode": "github_repo",
+    "github_repo_path": "${FACTORY_GITHUB_REPO_PATH}",
+    "runs_root": "factory_runs",
+    "shared_memory_root": "factory_memory",
+    "shared_knowledge_root": "factory_knowledge",
+    "shared_skills_root": "factory_skills",
+    "shared_metrics_root": "factory_metrics",
+    "enforce_repo_path": true
+  },
+  "git_sync": {
+    "enabled": false,
+    "auto_commit": false,
+    "auto_push": false,
+    "branch": "main",
+    "commit_message_template": "devin-factory {pipeline} {ts_utc}"
+  },
+  "parallel_runner": {
+    "default_max_concurrency": 2,
+    "pipeline_script": "devin_pipeline_v2.py",
+    "logs_dir": "factory_runs/_parallel_logs"
+  },
+  "references": {
+    "skill_registry": "[SKILL/FILE] /workspace/.agents/skills/",
+    "arr_reference_index": "[SKILL/FILE] /workspace/architecture-reference/INDEX.md",
+    "arr_guardrails": "[SKILL/FILE] /workspace/architecture-reference/guardrails/",
+    "arr_patterns": "[SKILL/FILE] /workspace/architecture-reference/patterns/",
+    "arr_domain_profiles": "[SKILL/FILE] /workspace/architecture-reference/domains/{domain_slug}.md"
+  }
+}

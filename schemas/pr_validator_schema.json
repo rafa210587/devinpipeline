@@ -1,0 +1,28 @@
+{
+  "type": "object",
+  "required": [
+    "approved",
+    "performance_approved",
+    "resilience_approved"
+  ],
+  "properties": {
+    "approved": {
+      "type": "boolean"
+    },
+    "performance_approved": {
+      "type": "boolean"
+    },
+    "resilience_approved": {
+      "type": "boolean"
+    },
+    "conflicts_detected": {
+      "type": "array"
+    },
+    "consolidated_high_findings": {
+      "type": "array"
+    },
+    "overall_feedback": {
+      "type": "string"
+    }
+  }
+}

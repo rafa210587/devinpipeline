@@ -1,0 +1,33 @@
+{
+  "type": "object",
+  "required": [
+    "approved",
+    "file",
+    "overall_status"
+  ],
+  "properties": {
+    "approved": {
+      "type": "boolean"
+    },
+    "file": {
+      "type": "string"
+    },
+    "stories_coverage": {
+      "type": "array"
+    },
+    "overall_status": {
+      "type": "string",
+      "enum": [
+        "complete",
+        "partial",
+        "missing"
+      ]
+    },
+    "overall_summary": {
+      "type": "string"
+    },
+    "feedback": {
+      "type": "string"
+    }
+  }
+}

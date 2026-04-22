@@ -1,0 +1,16 @@
+﻿{
+  "name": "Project Beta",
+  "slug": "project_beta",
+  "profile": "generic",
+  "description": "Second example seed for parallel execution.",
+  "goals": [
+    "Validate multi-project orchestration"
+  ],
+  "requirements": [
+    "Run independent pipeline with same architecture"
+  ],
+  "brainstorm": "Create another small domain example to run concurrently.",
+  "constraints": [
+    "Python 3.11"
+  ]
+}

@@ -1,0 +1,70 @@
+{
+  "oneOf": [
+    {
+      "type": "object",
+      "required": [
+        "status",
+        "module_file",
+        "content"
+      ],
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "done"
+          ]
+        },
+        "module_file": {
+          "type": "string"
+        },
+        "content": {
+          "type": "string"
+        },
+        "notes": {
+          "type": "string"
+        },
+        "correction_notes": {
+          "type": "string"
+        },
+        "self_check": {
+          "type": "object"
+        },
+        "stories_addressed": {
+          "type": "array"
+        }
+      }
+    },
+    {
+      "type": "object",
+      "required": [
+        "status",
+        "question",
+        "context",
+        "my_position"
+      ],
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "blocked"
+          ]
+        },
+        "task_id": {
+          "type": "string"
+        },
+        "question": {
+          "type": "string"
+        },
+        "context": {
+          "type": "string"
+        },
+        "my_position": {
+          "type": "string"
+        },
+        "why_blocking": {
+          "type": "string"
+        }
+      }
+    }
+  ]
+}
