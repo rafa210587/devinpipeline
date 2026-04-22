@@ -84,6 +84,14 @@
       "after_p2": false,
       "after_p4": false
     },
+    "terminal_proxy": {
+      "enabled": true,
+      "mirror_session_messages": true,
+      "allow_input_during_wait": true,
+      "announce_waiting_hint": true,
+      "prompt_prefix": "[TERMINAL_PROXY]",
+      "max_message_chars": 16000
+    },
     "transport": {
       "mode": "http",
       "mcp": {

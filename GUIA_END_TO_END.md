@@ -1,7 +1,11 @@
 # Guia End-to-End do Sistema Devin Factory V2
 
-Data: 2026-04-21
+Data: 2026-04-22
 Escopo: explicar o sistema de ponta a ponta, o papel de cada arquivo e como operar no dia a dia.
+
+Contrato deste documento:
+- este e o documento canonico do estado atual do pacote.
+- fluxo oficial atual: 7 etapas operacionais (`P0..P6`), com `P6` opcional por config.
 
 ---
 
@@ -19,7 +23,7 @@ A ideia central e:
 Tudo com orquestracao por sessions no Devin (parent coordinator + child sessions).
 
 Resumo rapido:
-- Pipeline oficial: P0 -> P1 -> P2 -> P3 -> P4 -> P5 -> P6 (P6 opcional por config)
+- Fluxo oficial atual: P0 -> P1 -> P2 -> P3 -> P4 -> P5 -> P6 (P6 opcional por config)
 - P1 pode ser pulado quando P0 decidir route_mode=pre_briefed
 - Governanca: evaluator por etapa + homologacao QA + judge final
 - Escala: suporte a run unica e multiplos projetos em paralelo
@@ -121,7 +125,7 @@ Checklist minimo de primeiro run:
   - operacao rapida (setup e comandos principais).
 
 - `MASTER_GUIDE.md`
-  - especificacao arquitetural V2 consolidada (decisoes e modelo alvo).
+  - historico de decisoes e racional de design (nao e contrato operacional atual).
 
 - `GUIA_END_TO_END.md` (este arquivo)
   - explicacao operacional e estrutural ponta a ponta.
@@ -374,7 +378,21 @@ Quando gate dispara:
 - script salva `GATE_<nome>.json`
 - aguarda `APPROVE_<nome>` ou `REJECT_<nome>`
 
-## 4.5 Como um orchestrator sabe o que o anterior fez
+## 4.5 Proxy terminal (mensagens e resposta humana)
+
+- O `devin_pipeline_v2.py` espelha no terminal as mensagens novas da session Devin.
+- Se a session entrar em `waiting_for_user` ou `waiting_for_approval`, voce pode responder direto no terminal:
+  - digite a mensagem e pressione ENTER
+  - a linha e encaminhada ao Devin via `send_message`
+- Ajustes em `factory_config.json`:
+  - `runtime.terminal_proxy.enabled`
+  - `runtime.terminal_proxy.mirror_session_messages`
+  - `runtime.terminal_proxy.allow_input_during_wait`
+  - `runtime.terminal_proxy.announce_waiting_hint`
+  - `runtime.terminal_proxy.prompt_prefix`
+  - `runtime.terminal_proxy.max_message_chars`
+
+## 4.6 Como um orchestrator sabe o que o anterior fez
 
 A continuidade acontece por 3 mecanismos combinados:
 
@@ -631,6 +649,12 @@ P6 (Learning):
 
 Matriz oficial com packages por dominio: `playbooks/packages/PACKAGES_GUIDE.md`.
 
+Cobertura de performance e custo (estado atual):
+- Performance: coberta no P4 por `dynamic_test_planner` + `perf_analyst` + `load_analyst` + `resilience_analyst` + conciliacao `pr_validator`.
+- Custo/FinOps: ainda sem agente dedicado canonico no baseline atual.
+- Implicacao: custo e eficiencia de execucao sao monitorados operacionalmente, mas sem um papel FinOps especializado na cadeia.
+- Recomendacao: incluir agente FinOps para custo por run, custo por etapa/pipeline e alertas de eficiencia.
+
 ## 5.4 Runtime corporativo (config decisiva)
 
 Campos-chave no `factory_config.json`:
@@ -641,6 +665,15 @@ Campos-chave no `factory_config.json`:
 - `runtime.session_defaults`
   - `repos`, `knowledge_ids`, `secret_ids`, `bypass_approval`.
   - `use_repo_manifest_as_repos` (recomendado manter `false` ate validar formato 100% compativel com API).
+- `runtime.transport`
+  - `runtime.transport.mode=http|mcp` define transporte de sessao (`create/get/send/terminate`).
+  - em `mcp`, configurar `runtime.transport.mcp.base_url`, `tool_call_endpoint`,
+    `auth_token` e `tools.*` conforme gateway MCP.
+- `runtime.terminal_proxy`
+  - habilita espelhamento de mensagens da session no terminal.
+  - durante `waiting_for_user`/`waiting_for_approval`, permite responder no proprio terminal.
+  - parametros: `enabled`, `mirror_session_messages`, `allow_input_during_wait`,
+    `announce_waiting_hint`, `prompt_prefix`, `max_message_chars`.
 - `runtime.learning`
   - `enabled` liga/desliga o P6 no fluxo `full` e no `resume` automatico apos docs.
   - `max_wait_seconds` controla timeout da etapa de learning.
@@ -779,7 +812,8 @@ Session em `waiting_for_user`/`waiting_for_approval` ate timeout
 Se voce precisar explicar este pacote em 30 segundos:
 
 "E uma factory de software com orquestracao por agentes no Devin.
-Tem 6 pipelines oficiais (produto, tecnica, build, validacao, docs, learning),
+Tem 7 etapas operacionais (P0..P6, com P6 opcional por configuracao),
+incluindo intake, produto, tecnica, build, validacao, docs e learning,
 com workers especializados, avaliacao por etapa, homologacao QA,
 judge final de release e suporte a execucao paralela entre projetos."
 
@@ -789,6 +823,7 @@ judge final de release e suporte a execucao paralela entre projetos."
 
 - `README.md` (operacao rapida)
 - `COORDINATOR_HANDOFF_AND_MEMORY.md` (handoff/memoria detalhados)
+- `MASTER_GUIDE.md` (historico de decisoes e racional antigo)
 - `CORPORATE_HARDENING_EXPLICITO.md` (as-is -> problema -> solucao -> por que)
 - `DEVIN_DOCS_CONFORMANCE_AUDIT.md` (aderencia a docs oficiais do Devin)
 

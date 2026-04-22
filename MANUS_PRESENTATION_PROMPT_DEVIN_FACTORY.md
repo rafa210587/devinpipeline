@@ -39,6 +39,29 @@ Formato desejado:
   - 1 slide final com recomendacao executiva
 - Se achar util, inclua notas curtas de apresentador, mas mantenha o foco no conteudo dos slides.
 
+Controle de redundancia (obrigatorio):
+- Ha blocos intencionalmente repetidos para reforco de contexto neste material; na versao final, consolide sem duplicar mensagem.
+- Nao repetir o mesmo argumento em slides diferentes com palavras equivalentes.
+- Priorizar 1 slide principal por tema:
+  - maturidade atual (AS-IS/GAP/TO-BE)
+  - arquitetura e fluxo
+  - governanca e qualidade
+  - contagem de agentes e distribuicoes
+  - beneficios
+  - riscos e recomendacao
+- Para beneficios, evitar separar em muitos slides redundantes; consolidar em uma leitura executiva unica com recortes por publico.
+- Para "7 etapas vs 6 frentes", explicar uma unica vez com tabela curta.
+
+Tratamento de performance e custo (obrigatorio):
+- Deixar explicito que analise de performance ja faz parte do baseline operacional em P4 (risk-based validation).
+- Deixar explicito que FinOps/custo dedicado ainda e gap planejado (nao vender como capacidade ja implantada).
+- Mostrar estado atual vs proximo passo:
+  - estado atual: performance/resilience/load com validacao dinamica;
+  - proximo passo: agente FinOps para custo por run, custo por etapa e alertas de eficiencia.
+- Ao falar de custo, diferenciar:
+  - custo de entrega operacional (tempo/execucao da pipeline);
+  - custo de infraestrutura/produto (fora do escopo direto da V2 neste momento).
+
 Capitulo de contextualizacao (obrigatorio):
 - Inclua um capitulo explicito de contextualizacao no inicio da apresentacao.
 - Esse capitulo deve explicar com clareza:
@@ -259,6 +282,88 @@ Matriz resumida de papeis:
 - Shared:
   - pipeline_global_orchestrator
   - (orquestrador opcional da cadeia completa)
+
+Agrupamento adicional obrigatorio de agentes por perfil:
+- Alem da visao por etapa, inclua uma visao por perfil funcional para facilitar leitura executiva de estrutura organizacional.
+- Use os seguintes perfis:
+  - Engenharia (build/arquitetura/implementacao)
+  - Qualidade (QA, code review, validacao, homologacao)
+  - DevOps e Operacoes (infra, confiabilidade, observabilidade operacional)
+  - Seguranca
+  - Refiner (refino de demanda e decomposicao)
+  - Governanca e Orquestracao
+  - Memoria e Conhecimento
+  - FinOps
+- Monte no minimo uma tabela com colunas:
+  - Perfil
+  - Objetivo principal
+  - Agentes relacionados
+  - Observacoes
+
+Mapa sugerido por perfil:
+- Engenharia:
+  - architect
+  - technical_analyst
+  - integration_mapper_llm
+  - contract_refiner
+  - builder
+- Qualidade:
+  - code_reviewer
+  - builder_qa
+  - eval_test_builder
+  - eval_devops_infra
+  - dynamic_test_planner
+  - perf_analyst
+  - resilience_analyst
+  - load_analyst
+  - chaos_analyst
+  - integration_validator
+  - eval_qa_template
+  - qa_consolidator
+  - pr_validator
+  - judge_final
+  - judge_quorum
+- DevOps e Operacoes:
+  - devops_infra_builder
+  - observability_designer
+  - observability_validator
+  - load_analyst
+  - chaos_analyst
+  - resilience_analyst
+- Seguranca:
+  - security
+- Refiner:
+  - prompt_normalizer
+  - draft_writer
+  - pm_profile_designer
+  - pm_base
+  - moderator
+  - eval_pm
+  - eval_moderator
+  - technical_analyst
+  - contract_refiner
+- Governanca e Orquestracao:
+  - pipeline_intake_orchestrator
+  - pipeline_brief_orchestrator
+  - pipeline_tech_orchestrator
+  - pipeline_build_orchestrator
+  - pipeline_validation_orchestrator
+  - pipeline_docs_orchestrator
+  - pipeline_learning_orchestrator
+  - pipeline_global_orchestrator
+  - judge_final
+  - judge_quorum
+- Memoria e Conhecimento:
+  - context_ledger_updater
+  - memory_builder
+  - memory_evaluator
+  - knowledge_curator
+  - promotion_manager
+  - skill_builder
+  - skill_evaluator
+- FinOps:
+  - nao ha agente finops dedicado no baseline atual.
+  - tratar como gap explicitado e recomendacao de evolucao (ex.: agente de custo/eficiencia por run e por pipeline).
 
 Fluxo ponta a ponta:
 1. P0 Intake
@@ -555,6 +660,11 @@ Se achar util, inclua um slide ou subsecao com KPIs sugeridos para operacao futu
 - percentual de execucoes que exigiram gate humano
 - numero de knowledge candidates promovidos
 - numero de skills candidatas aprovadas para reuso
+- p95/p99 de latencia dos fluxos validados quando aplicavel
+- taxa de degradacao detectada em cenarios de carga/resiliencia
+- custo medio por run
+- custo por etapa/pipeline
+- percentual de runs acima de teto de custo planejado
 
 Exemplo resumido de como um usuario iniciaria o processo:
 Use um exemplo simples e corporativo, como:
@@ -616,33 +726,38 @@ Slide 7
   - 6 frentes centrais apos intake
 
 Slide 8
-- contagem de agentes
-- leitura executiva da distribuicao
+- contagem de agentes por etapa
+- leitura executiva da distribuicao por etapa
 
 Slide 9
+- agrupamento de agentes por perfil
+- engenharia, qualidade, devops/operacoes, seguranca, refiner, governanca, memoria/conhecimento e finops (gap)
+
+Slide 10
 - como funciona a governanca
 - quorum, eval independente, homologacao, judge final
 
-Slide 10
+Slide 11
 - diferenciais tecnicos
 - Complexity Router, Dynamic Test Planner, Skill Creation Loop, memoria dual-layer
 
-Slide 11
+Slide 12
 - operacao corporativa
 - processo Python local + Devin + GitHub como storage
 
-Slide 12
+Slide 13
 - estrutura de persistencia e handoff
 - `factory_runs`, `factory_memory`, `factory_knowledge`, `factory_skills`, `workspace_handoff.json`
 
-Slide 13
-- beneficios e ganhos para negocio
-
 Slide 14
-- beneficios e ganhos para engenharia e operacoes
+- beneficios e ganhos consolidados (negocio, engenharia e operacoes)
+- usar tabela unica para evitar redundancia narrativa
+- incluir scorecard executivo com performance (estado atual) e custo (lacuna + plano FinOps)
 
 Slide 15
 - pontos de atencao e riscos
+- deixar claro: FinOps dedicado ainda nao implementado no baseline
+- propor plano de fechamento do gap em fases
 
 Slide 16
 - esforco estimado, fases de adocao e recomendacao executiva final
@@ -662,6 +777,8 @@ Peca especial que eu quero muito bem feita:
 - Um slide AS-IS vs TO-BE (IA assistida/agentes simples vs pipeline multiagente orquestrada)
 - Um slide com a diferenca entre 7 etapas e 6 frentes apos intake
 - Um slide com a contagem de agentes e a leitura executiva disso
+- Um slide com agrupamento de agentes por perfil funcional
+- Um slide "performance e custo": o que ja existe (P4) vs o que falta (FinOps dedicado)
 - Um slide com beneficios para negocio e engenharia
 - Um slide franco sobre pontos de atencao
 - Um slide final com recomendacao executiva
@@ -674,12 +791,15 @@ Mensagens que a apresentacao deve transmitir:
 - O uso do Devin CLI com subagents pode complementar a operacao, mas a governanca principal vem da pipeline estruturada.
 - O sistema foi pensado para baixa interacao humana, sem perder controle.
 - A arquitetura de referencia, os guardrails, o knowledge e as skills sao parte do ativo operacional da fabrica.
+- Performance operacional ja e tratada como parte nativa da validacao (P4).
+- Custo/FinOps dedicado esta no roadmap e deve ser tratado como evolucao planejada.
 
 Mensagens que a apresentacao nao deve transmitir:
 - que o sistema ja resolve tudo sozinho sem governanca
 - que todos os riscos ja foram eliminados
 - que a operacao cloud ja esta pronta
 - que memoria e knowledge podem crescer sem curadoria
+- que ja existe agente FinOps dedicado em producao no baseline atual
 
 Se achar util, voce pode fechar com uma recomendacao executiva como:
 "Adotar o Devin Factory V2 em fases, com inicio assistido, governanca clara e metricas de qualidade, para transformar o Devin em uma esteira corporativa de entrega com mais previsibilidade, controle e capacidade de escala."

@@ -9,6 +9,7 @@ from typing import Any
 DEFAULT_CONFIG_BASENAME = "factory_config.json"
 ENV_CONFIG_PATH = "DEVIN_FACTORY_CONFIG_PATH"
 _ENV_VAR_PATTERN = re.compile(r"\$\{([A-Z0-9_]+)\}")
+_DOTENV_LOADED = False
 
 DEFAULT_CONFIG: dict[str, Any] = {
     "devin": {
@@ -173,7 +174,44 @@ def _default_config_path() -> Path:
     return (Path(__file__).resolve().parent / DEFAULT_CONFIG_BASENAME)
 
 
+def _parse_dotenv_line(raw_line: str) -> tuple[str, str] | None:
+    line = raw_line.strip()
+    if not line or line.startswith("#"):
+        return None
+    if line.lower().startswith("export "):
+        line = line[7:].strip()
+    if "=" not in line:
+        return None
+    key, value = line.split("=", 1)
+    key = key.strip()
+    value = value.strip()
+    if not key:
+        return None
+    if len(value) >= 2 and value[0] == value[-1] and value[0] in {"'", '"'}:
+        value = value[1:-1]
+    return key, value
+
+
+def _maybe_load_local_dotenv() -> None:
+    global _DOTENV_LOADED
+    if _DOTENV_LOADED:
+        return
+    _DOTENV_LOADED = True
+
+    dotenv_path = Path(__file__).resolve().parent / ".env"
+    if not dotenv_path.exists():
+        return
+
+    for raw_line in dotenv_path.read_text(encoding="utf-8-sig").splitlines():
+        parsed = _parse_dotenv_line(raw_line)
+        if not parsed:
+            continue
+        key, value = parsed
+        os.environ.setdefault(key, value)
+
+
 def load_factory_config(config_path: str | Path | None = None) -> dict[str, Any]:
+    _maybe_load_local_dotenv()
     chosen_path = (
         Path(config_path).expanduser().resolve()
         if config_path is not None
@@ -184,6 +222,6 @@ def load_factory_config(config_path: str | Path | None = None) -> dict[str, Any]
             f"Arquivo de configuracao nao encontrado: {chosen_path}"
         )
 
-    loaded = json.loads(chosen_path.read_text(encoding="utf-8"))
+    loaded = json.loads(chosen_path.read_text(encoding="utf-8-sig"))
     merged = _deep_merge(DEFAULT_CONFIG, loaded)
     return _resolve_env_placeholders(merged)

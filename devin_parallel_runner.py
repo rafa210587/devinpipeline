@@ -4,6 +4,7 @@ import json
 import sys
 from dataclasses import dataclass
 from pathlib import Path
+from typing import Any
 
 from config_loader import load_factory_config
 
@@ -17,6 +18,10 @@ class Job:
     resume_from: str | None
 
 
+def _read_json_file(path: Path) -> Any:
+    return json.loads(path.read_text(encoding="utf-8-sig"))
+
+
 def _resolve_local_path(raw_path: str | Path, base_dir: Path) -> Path:
     candidate = Path(raw_path)
     if candidate.is_absolute():
@@ -25,7 +30,7 @@ def _resolve_local_path(raw_path: str | Path, base_dir: Path) -> Path:
 
 
 def load_jobs(batch_file: Path) -> list[Job]:
-    payload = json.loads(batch_file.read_text(encoding="utf-8"))
+    payload = _read_json_file(batch_file)
     raw_jobs = payload.get("jobs", payload)
     if not isinstance(raw_jobs, list):
         raise ValueError("batch file must contain a list or {'jobs': [...]} ")

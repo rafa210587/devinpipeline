@@ -1,8 +1,10 @@
-> Leitura recomendada: `GUIA_END_TO_END.md` (operacao ponta a ponta)
+> Documento canonico do estado atual: `GUIA_END_TO_END.md` (operacao + arquitetura em runtime)
 
 # Devin Factory V2 Package
 
-Data: 2026-04-16
+Data: 2026-04-22
+
+Este README e intencionalmente curto: setup rapido, comandos e links para os documentos certos.
 
 Este pacote entrega:
 - pipeline completa `P0 -> P6` (com `P6` opcional via `runtime.learning.enabled`)
@@ -113,6 +115,18 @@ Defaults de concorrencia/script/logs sao lidos de `factory_config.json`.
   - `runtime.transport.mcp.auth_token`
   - `runtime.transport.mcp.tools.*` (aliases para create/get/send/terminate)
 
+## 4.2) Proxy de mensagens no terminal
+
+- O orquestrador agora espelha no terminal as mensagens que chegarem da session Devin.
+- Em estado `waiting_for_user` / `waiting_for_approval`, voce pode digitar no terminal e pressionar ENTER para encaminhar a mensagem para o Devin.
+- Config em `factory_config.json`:
+  - `runtime.terminal_proxy.enabled`
+  - `runtime.terminal_proxy.mirror_session_messages`
+  - `runtime.terminal_proxy.allow_input_during_wait`
+  - `runtime.terminal_proxy.announce_waiting_hint`
+  - `runtime.terminal_proxy.prompt_prefix`
+  - `runtime.terminal_proxy.max_message_chars`
+
 ## 5) Outbox behavior
 
 - Packages oficiais por dominio: `intake`, `product`, `technology`, `build`, `validation`, `documentation`, `shared`.
@@ -131,6 +145,10 @@ Defaults de concorrencia/script/logs sao lidos de `factory_config.json`.
   - `eval_metrics_report.md`
   - `eval_metrics_history.jsonl`
 - Metricas de `accuracy/precision/recall/f1` sao calculadas quando `eval_ground_truth.json` existir na run.
+- Cobertura de validacao de performance existe em `P4` (ex.: `perf_analyst`, `load_analyst`, `resilience_analyst`, conciliacao via `pr_validator`).
+- Analise de custo/FinOps dedicada ainda nao existe como agente canonico no baseline atual.
+  - Status atual: lacuna conhecida.
+  - Recomendacao: adicionar agente FinOps para custo/eficiencia por run e por pipeline.
 - Handoff entre LLMs: `LLM_HANDOFF_LOG.md` (status atual, progresso, proximos passos).
 - Memoria separada: `memory/episodic_memory.jsonl` (fatos) e `memory/semantic_memory_candidates.jsonl` (heuristicas).
 - Em modo corporativo, memoria/knowledge/skills tambem sao espelhados em:
@@ -163,10 +181,11 @@ Checklist rapido:
 - Explicacao operacional ponta a ponta:
   - `GUIA_END_TO_END.md`
 
-## 7) Fonte de verdade
+## 7) Hierarquia da Documentacao
 
-- Arquitetura e decisoes: `MASTER_GUIDE.md`
-- Operacao: `GUIA_END_TO_END.md`
+- Estado atual (fonte canonica): `GUIA_END_TO_END.md`
+- Operacao rapida: `README.md` (este arquivo)
+- Historico de decisoes e racional antigo: `MASTER_GUIDE.md`
 - Handoff/memoria/tracking: `COORDINATOR_HANDOFF_AND_MEMORY.md`
 - Conformance Devin docs: `DEVIN_DOCS_CONFORMANCE_AUDIT.md`
 - Endurecimento corporativo e racional das correcoes: `CORPORATE_HARDENING_EXPLICITO.md`

@@ -90,6 +90,11 @@ Conclusao:
 | promotion_manager | shared | P6 | Decide promocao project/global para memoria/knowledge/skills |
 | pipeline_learning_orchestrator | shared | P6 | Orquestra consolidacao de memoria e promocao de conhecimento |
 
+Observacao sobre cobertura FinOps:
+- Performance e carga estao cobertas no pacote `validation` (`perf_analyst`, `load_analyst`, `resilience_analyst`, `pr_validator`).
+- Ainda nao existe agente FinOps dedicado canonico para custo/eficiencia de execucao.
+- Tratar FinOps como gap planejado de evolucao (custo por run, custo por etapa, alertas de eficiencia).
+
 ## Indice rapido por etapa
 
 - P0: `pipeline_intake_orchestrator`, `prompt_normalizer`, `eval_prompt_normalizer`

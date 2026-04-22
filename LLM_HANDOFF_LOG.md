@@ -263,3 +263,54 @@
 ### Notes / Caveats
 - MCP execution depends on reachable MCP endpoint and compatible tool-call contract (`tool_gateway` or JSON-RPC style response).
 - Full end-to-end MCP run against real Devin MCP server still depends on corporate network/access setup.
+
+## Update 2026-04-22 (Follow-up validation)
+
+- Revalidated runtime and config loading after feature delivery:
+  - `python devin_pipeline_v2.py --help` OK
+  - `load_factory_config('factory_config.json')` returns:
+    - `runtime.transport.mode = http`
+    - `runtime.eval_metrics.enabled = true`
+    - `storage.shared_metrics_root = factory_metrics`
+- Confirmed code references for:
+  - transport switch (`http|mcp`)
+  - deterministic eval metrics generation and persistence
+  - docs and env examples updated.
+- Restored tracked temporary validation files (`_tmp_eval_metrics/*`, `_tmp_factory_config_mcp.json`) to avoid accidental deletions in git history.
+- Workspace still has untracked `__pycache__/*.pyc` files locked by filesystem/OneDrive; these do not impact runtime.
+
+## Update 2026-04-22 (Presentation prompt refinement)
+
+- Reviewed `MANUS_PRESENTATION_PROMPT_DEVIN_FACTORY.md` for redundancy and structure clarity.
+- Added mandatory redundancy-control instructions so final deck consolidates repeated themes instead of duplicating slides.
+- Added a new mandatory section for agent grouping by profile (in addition to stage grouping):
+  - Engenharia
+  - Qualidade
+  - DevOps e Operacoes
+  - Seguranca
+  - Refiner
+  - Governanca e Orquestracao
+  - Memoria e Conhecimento
+  - FinOps (explicitly marked as current gap / roadmap)
+- Updated suggested 16-slide narrative to include a dedicated profile-grouping slide and kept total slide count within requested range.
+- Updated “Peca especial” checklist to explicitly require profile grouping slide.
+
+## Update 2026-04-22 (Performance vs Cost/FinOps coverage clarification)
+
+- Confirmed performance evaluation is already implemented and documented in P4 (dynamic test planner + perf/load/resilience validators + pr_validator).
+- Confirmed no dedicated canonical FinOps agent exists in baseline.
+- Updated docs to make this explicit and avoid ambiguity:
+  - README: added explicit note that FinOps/cost analysis is a known gap and recommendation.
+  - GUIA_END_TO_END: added section "Cobertura de performance e custo (estado atual)".
+  - PACKAGES_GUIDE: added FinOps coverage note under agent matrix.
+- Presentation prompt already marks FinOps as gap; kept alignment with docs.
+
+## Update 2026-04-22 (Presentation refinement: performance vs cost)
+
+- Updated `MANUS_PRESENTATION_PROMPT_DEVIN_FACTORY.md` to explicitly separate:
+  - what is already operational (performance/risk-based validation in P4)
+  - what is still roadmap (dedicated FinOps/cost agent)
+- Added required guidance to avoid overclaiming FinOps maturity.
+- Added KPI suggestions for performance and execution cost (p95/p99, cost per run, cost per stage, runs above budget).
+- Updated narrative slides to include executive scorecard and explicit risk/gap messaging for FinOps.
+- Added mandatory special slide: "performance e custo: estado atual vs gap FinOps".

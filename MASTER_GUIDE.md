@@ -1,8 +1,12 @@
 ﻿# Devin Factory V2 - Hybrid Master Spec (Best of Both)
 
 Data: 2026-04-16
-Status: aprovado para desenho alvo
-Objetivo: unificar o melhor dos playbooks do Claude com a governanca da V1, mantendo 5 pipes, paralelismo real, debate entre agentes, skills dinamicas e validacao precisa sem redundancia.
+Status: historico de desenho alvo (nao e contrato operacional atual)
+Objetivo na data deste documento: unificar o melhor dos playbooks do Claude com a governanca da V1, mantendo o modelo alvo inicial de 5 pipes (A-E), paralelismo real, debate entre agentes, skills dinamicas e validacao precisa sem redundancia.
+
+Leitura recomendada para estado atual do sistema:
+- `GUIA_END_TO_END.md` (fonte canonica de operacao + arquitetura em runtime)
+- `README.md` (setup/comandos rapidos)
 
 ---
 
@@ -10,7 +14,7 @@ Objetivo: unificar o melhor dos playbooks do Claude com a governanca da V1, mant
 
 Avaliacao final dos playbooks:
 - Melhor para execucao operacional: pacote Claude (orchestrators + workers + evals).
-- Melhor para governanca e estrategia de produto: V1 (5 pipes oficiais, QA Homologator, memoria x guardrails, API/MCP primario e CLI em piloto).
+- Melhor para governanca e estrategia de produto: V1 (modelo alvo historico de 5 pipes oficiais, QA Homologator, memoria x guardrails, API/MCP primario e CLI em piloto).
 - Melhor V2: hibrido. Basear execucao nos playbooks Claude, com ajustes estruturais obrigatorios da V1.
 
 Veredito objetivo:
@@ -128,7 +132,7 @@ Coordinator mantendo contexto entre sessoes:
 - worker/eval specs detalhadas de P2/P3/P4/P5 (com ajustes abaixo).
 
 ### 3.2 Keep (V1)
-- 5 pipes oficiais como contrato de governanca.
+- 5 pipes oficiais como contrato de governanca (na proposta historica deste documento).
 - separacao executor/evaluator e papel explicito de QA Homologator.
 - precedencia de memoria: objective > guardrail hard > contratos locked > heuristicas.
 - estrategia de plataforma: API/MCP primario, CLI subagents como piloto controlado.
@@ -253,7 +257,7 @@ Coordinator mantendo contexto entre sessoes:
 
 ---
 
-## 5) Pipeline V2 (5 pipes oficiais)
+## 5) Pipeline V2 (modelo alvo historico de 5 pipes oficiais)
 
 ## Pipe A - Brief/Refinamento Produto
 
