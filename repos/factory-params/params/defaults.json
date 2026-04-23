@@ -2,9 +2,14 @@
   "transport_mode": "http",
   "max_concurrency": 4,
   "human_gates": {
-    "after_p1": false,
-    "after_p2": false,
-    "after_p4": false
+    "after_p0": true,
+    "after_p1": true,
+    "after_p2": true,
+    "after_p3": true,
+    "after_p4": true,
+    "after_p5": true,
+    "after_p6": true,
+    "require_explicit_approval": true
   },
   "timeouts": {
     "intake": 1800,
@@ -16,7 +21,7 @@
     "learning": 3600,
     "waiting_detail": 1800
   },
-  "learning_enabled": true,
+  "learning_mandatory": true,
   "p0_enabled": true,
   "allow_pre_briefed": true,
   "tracking_enabled": true,

@@ -33,25 +33,33 @@ Conclusao:
 
 ## Coordinator inicial central
 
-No modo agent-first com prompt unico, a sessao inicial central e:
-- `Factory Control-Plane Agent` em `repos/factory-control-plane/prompts/master_pipeline_prompt.md`
+No modo agent-first, a sessao inicial central e:
+- `Factory Control-Plane Agent`
 
-Na execucao interna dessa sessao, o papel coordenador raiz e:
+O contrato canonico de execucao dessa sessao e:
 - `pipeline_global_orchestrator`
+
+O arquivo `master_pipeline_prompt.md` continua existindo, mas **apenas como bootstrap tecnico**.
+Ele nao deve mais ser tratado como a fonte da verdade da pipeline.
+O usuario nao deveria precisar colar esse prompt operacionalmente a cada run.
 
 Responsabilidade do coordinator central:
 - abrir a sessao raiz
-- definir rota P0->P6
+- definir e controlar a rota `P0 -> P1 -> P2 -> P3 -> P4 -> P5 -> P6`
+- aplicar `resume`, `skip`, gates obrigatorios de revisao humana e execucao mandataria de `P6`
 - disparar orchestrators de etapa e especialistas
 - controlar dependencias, quorum, escalacao e handoffs
+- consolidar artefatos e expor resultado de cada etapa ao usuario com resumo antes da aprovacao da proxima
 
 ## Matriz de agentes (fonte oficial)
 
 | Agent | Package | Etapa principal | Papel |
 |---|---|---|---|
-| pipeline_intake_orchestrator | intake | P0 | Orquestra intake, rota e contrato inicial |
-| prompt_normalizer | intake | P0 | Normaliza prompt inicial e repo_manifest |
-| eval_prompt_normalizer | intake | P0 | Avalia qualidade do prompt normalizado |
+| pipeline_intake_orchestrator | intake | P0 | Orquestra prompt cru -> normalizacao -> spec -> aprovacao humana -> handoff |
+| prompt_normalizer | intake | P0 | Normaliza prompt inicial, anexos e hints para geracao de spec |
+| eval_prompt_normalizer | intake | P0 | Avalia se a normalizacao esta pronta para sustentar a spec |
+| spec_writer | intake | P0 | Gera a spec inicial de intake com apoio de AR, refinement e skills aderentes |
+| eval_spec_writer | intake | P0 | Audita a spec antes da revisao humana e do handoff para P1 |
 | pipeline_brief_orchestrator | product | P1 | Orquestra refinamento de briefing |
 | draft_writer | product | P1 | Produz draft inicial de briefing |
 | pm_profile_designer | product | P1 | Define composicao de PMs especialistas |
@@ -59,22 +67,22 @@ Responsabilidade do coordinator central:
 | eval_pm | product | P1 | Filtra qualidade de critica dos PMs |
 | moderator | product | P1 | Consolida criticas aprovadas em briefing final |
 | eval_moderator | product | P1 | Valida briefing refinado pelo moderator |
-| pipeline_tech_orchestrator | technology | P2 | Orquestra decomposicao tecnica |
-| technical_analyst | technology | P2 | Decompoe modulo/responsabilidade |
-| eval_tech_analyst | technology | P2 | Avalia qualidade da decomposicao |
-| architect | technology | P2/P3(quorum) | Define build_plan e decisoes tecnicas |
+| pipeline_tech_orchestrator | technology | P2 | Orquestra backlog tecnico, contratos, integracao e diagramas Mermaid |
+| technical_analyst | technology | P2 | Quebra backlog tecnico em slices pequenas e produz Mermaid funcional |
+| eval_tech_analyst | technology | P2 | Valida granularidade, rastreabilidade e Mermaid funcional |
+| architect | technology | P2/P3(quorum) | Define build_plan, decisoes tecnicas e Mermaid tecnico |
 | eval_architect | technology | P2 | Valida fidelity 1:1 modules/build_plan |
-| integration_mapper_llm | technology | P2 | Refina mapa de integracao |
-| contract_refiner | technology | P2 | Refina contrato por modulo |
+| integration_mapper_llm | technology | P2 | Explicita mapa de integracao e dependencias coerentes com os diagramas |
+| contract_refiner | technology | P2 | Refina contratos por modulo com referencias de schema |
 | observability_designer | technology | P2 | Define plano de observabilidade (metricas/logs/traces/dash/alertas) |
 | eval_observability_designer | technology | P2 | Valida qualidade e cobertura do plano de observabilidade |
 | pipeline_build_orchestrator | build | P3 | Orquestra execucao pilot+parallel |
 | builder | build | P3 | Implementa modulo |
 | devops_infra_builder | build | P3 | Implementa modulo de infraestrutura/IaC |
 | code_reviewer | build | P3 | Avalia conformidade tecnica do codigo |
-| builder_qa | build | P3 | Avalia cobertura de escopo por story |
-| test_builder | build | P3 | Construi testes unitarios/integracao por modulo |
-| eval_test_builder | build | P3 | Audita qualidade e cobertura dos testes gerados |
+| builder_qa | build | P3 | Construi testes unitarios do slice e matriz minima de rastreabilidade |
+| test_builder | build | P3 | Construi testes complementares de integracao/contrato quando o risco exigir |
+| eval_test_builder | build | P3 | Audita se a camada de testes esta aderente ao contrato, risco e ownership esperado |
 | eval_devops_infra | build | P3 | Audita fidelidade/seguranca/idempotencia de IaC |
 | judge_quorum | build | P3/P4 | Desempata conflitos tecnicos vinculantes |
 | skill_builder | build | P3 | Materializa skill candidate |
@@ -96,13 +104,13 @@ Responsabilidade do coordinator central:
 | pipeline_docs_orchestrator | documentation | P5 | Orquestra documentacao final |
 | doc_writer | documentation | P5 | Gera docs finais baseadas no codigo |
 | eval_docs | documentation | P5 | Valida fidelidade e qualidade de docs |
-| pipeline_global_orchestrator | shared | P0..P5 | Orquestracao interna opcional da cadeia completa |
-| context_ledger_updater | shared | P0..P5 | Atualiza ledger de contexto/memoria |
-| memory_builder | shared | P0..P5 | Separa memoria episodica e semantic a partir de evidencias da run |
-| memory_evaluator | shared | P0..P5 | Deduplica e valida memoria antes de promover |
-| knowledge_curator | shared | P0..P5 | Converte semantic memory aprovada em knowledge reutilizavel |
+| pipeline_global_orchestrator | shared | P0..P6 | Coordenador raiz canonico da cadeia completa, gates, resume, contexto e consolidado final |
+| context_ledger_updater | shared | P0..P6 | Atualiza ledger de contexto/memoria ao longo da run e na consolidacao final |
+| memory_builder | shared | P0..P6/P6 | Separa memoria episodica e semantic a partir de evidencias da run |
+| memory_evaluator | shared | P0..P6/P6 | Deduplica e valida memoria antes de promover |
+| knowledge_curator | shared | P0..P6/P6 | Converte semantic memory aprovada em knowledge reutilizavel |
 | promotion_manager | shared | P6 | Decide promocao project/global para memoria/knowledge/skills |
-| pipeline_learning_orchestrator | shared | P6 | Orquestra consolidacao de memoria e promocao de conhecimento |
+| pipeline_learning_orchestrator | shared | P6 | Executa obrigatoriamente a etapa final de learning, promotions e consolidacao institucional |
 
 Observacao sobre cobertura FinOps:
 - Performance e carga estao cobertas no pacote `validation` (`perf_analyst`, `load_analyst`, `resilience_analyst`, `pr_validator`).
@@ -111,25 +119,29 @@ Observacao sobre cobertura FinOps:
 
 ## Indice rapido por etapa
 
-- P0: `pipeline_intake_orchestrator`, `prompt_normalizer`, `eval_prompt_normalizer`
+- P0: `pipeline_intake_orchestrator`, `prompt_normalizer`, `eval_prompt_normalizer`, `spec_writer`, `eval_spec_writer`
 - P1: `pipeline_brief_orchestrator`, `draft_writer`, `pm_profile_designer`, `pm_base`, `eval_pm`, `moderator`, `eval_moderator`
 - P2: `pipeline_tech_orchestrator`, `technical_analyst`, `eval_tech_analyst`, `architect`, `eval_architect`, `integration_mapper_llm`, `contract_refiner`, `observability_designer`, `eval_observability_designer`
 - P3: `pipeline_build_orchestrator`, `builder`, `devops_infra_builder`, `code_reviewer`, `builder_qa`, `test_builder`, `eval_test_builder`, `eval_devops_infra`, `judge_quorum`, `skill_builder`, `skill_evaluator`
 - P4: `pipeline_validation_orchestrator`, `dynamic_test_planner`, `perf_analyst`, `resilience_analyst`, `integration_validator`, `security`, `load_analyst`, `chaos_analyst`, `observability_validator`, `architect_final_validator`, `pr_validator`, `eval_qa_template`, `qa_consolidator`, `judge_final`
 - P5: `pipeline_docs_orchestrator`, `doc_writer`, `eval_docs`
 - P6: `pipeline_learning_orchestrator`, `context_ledger_updater`, `memory_builder`, `memory_evaluator`, `knowledge_curator`, `promotion_manager`
-- Transversal: `pipeline_global_orchestrator`, `context_ledger_updater`, `memory_builder`, `memory_evaluator`, `knowledge_curator`, `promotion_manager`
+- Transversal: `pipeline_global_orchestrator`
 
 ## Regras de funcionamento out-of-box
 
 1. Runtime usa playbooks canonicos em `playbooks/*.md`.
 2. `playbooks/packages/*` e camada organizacional para registro e governanca.
-3. IDs em `factory_config.json` devem apontar para orchestrators canonicos (`playbooks.intake/brief/tech/build/validate/docs/learning` quando P6 habilitado).
-4. Se editar playbook canonico, replique para o package correspondente.
-5. Antes do primeiro run, valide:
+3. IDs em `factory_config.json` devem apontar para orchestrators canonicos (`playbooks.intake/brief/tech/build/validate/docs/learning`).
+4. O **contrato canonico de entrada** da pipeline inteira deve ser `agent_runtime.root_orchestrator`.
+5. `master_pipeline_prompt.md` deve existir apenas como bootstrap tecnico, nao como fonte de verdade da pipeline.
+6. Antes do primeiro run, valide:
    - repos e referencias resolvidos em `repos/factory-params/params/repos.json`
    - fallbacks definidos em `repos/factory-params/params/repos_fallback.json` quando necessario
-   - prompt unico de entrada apontando para `repos/factory-control-plane/prompts/master_pipeline_prompt.md`
-6. Tracking e memoria saem automaticos no output:
+   - `root_orchestrator` apontando para `playbooks/packages/shared/pipeline_global_orchestrator.md`
+   - gates humanos configurados para revisar `P0..P6` antes de cada transicao
+7. Tracking e memoria saem automaticos no output:
    - `execution_tracking.md`, `dilemmas_and_solutions.md`, `tracking_events.jsonl`
    - `memory/episodic_memory.jsonl` e `memory/semantic_memory_candidates.jsonl`
+8. `P6` nao deve ser desabilitada:
+   - a etapa final sempre consolida memoria, knowledge, skills e promocoes da run

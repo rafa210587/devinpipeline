@@ -1,15 +1,57 @@
-﻿{
+{
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "CoordinatorOutput",
   "type": "object",
-  "required": ["run_id", "stage", "status", "outputs", "confidence"],
+  "required": ["status"],
   "properties": {
     "run_id": {"type": "string"},
+    "task_id": {"type": "string"},
+    "agent_type": {"type": "string"},
+    "scope": {"type": "string"},
     "stage": {"type": "string", "enum": ["p0", "p1", "p2", "p3", "p4", "p5", "p6"]},
-    "status": {"type": "string", "enum": ["completed", "failed", "skipped", "blocked"]},
+    "status": {"type": "string", "enum": ["done", "completed", "failed", "skipped", "blocked"]},
     "outputs": {"type": "object", "additionalProperties": true},
     "next_stage": {"type": ["string", "null"]},
-    "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+    "confidence": {
+      "oneOf": [
+        {"type": "number", "minimum": 0, "maximum": 1},
+        {"type": "string"}
+      ]
+    },
+    "execution_plan": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "artifact_index": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "handoff": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "stage_closure_summary": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "stage_review_packet": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "debate_summary": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "persistence_writes": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "release_decision": {"type": ["string", "null"]},
+    "notes": {"type": "string"},
+    "residual_risks": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
     "blockers": {
       "type": "array",
       "items": {
@@ -28,5 +70,5 @@
       "items": {"type": "object", "additionalProperties": true}
     }
   },
-  "additionalProperties": false
+  "additionalProperties": true
 }

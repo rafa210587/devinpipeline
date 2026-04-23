@@ -2,9 +2,11 @@
 
 ## Start here
 1. `../prompts/master_pipeline_prompt.md`
-2. `../workflows/pipeline_dag.json`
-3. `../workflows/resume_map.json`
-4. `SCHEDULER_AND_DAG.md`
+2. `../../../playbooks/packages/shared/pipeline_global_orchestrator.md`
+3. `../../../repos/READMEGeral.md`
+4. `../workflows/pipeline_dag.json`
+5. `../workflows/resume_map.json`
+6. `SCHEDULER_AND_DAG.md`
 
 ## Policies
 - `../policies/orchestration_policy.md`

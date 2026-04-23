@@ -7,7 +7,7 @@
     "max_concurrency",
     "human_gates",
     "timeouts",
-    "learning_enabled",
+    "learning_mandatory",
     "p0_enabled",
     "allow_pre_briefed",
     "tracking_enabled",
@@ -20,11 +20,25 @@
     "max_concurrency": {"type": "integer", "minimum": 1},
     "human_gates": {
       "type": "object",
-      "required": ["after_p1", "after_p2", "after_p4"],
+      "required": [
+        "after_p0",
+        "after_p1",
+        "after_p2",
+        "after_p3",
+        "after_p4",
+        "after_p5",
+        "after_p6",
+        "require_explicit_approval"
+      ],
       "properties": {
+        "after_p0": {"type": "boolean"},
         "after_p1": {"type": "boolean"},
         "after_p2": {"type": "boolean"},
-        "after_p4": {"type": "boolean"}
+        "after_p3": {"type": "boolean"},
+        "after_p4": {"type": "boolean"},
+        "after_p5": {"type": "boolean"},
+        "after_p6": {"type": "boolean"},
+        "require_explicit_approval": {"type": "boolean"}
       },
       "additionalProperties": false
     },
@@ -43,7 +57,7 @@
       },
       "additionalProperties": false
     },
-    "learning_enabled": {"type": "boolean"},
+    "learning_mandatory": {"type": "boolean"},
     "p0_enabled": {"type": "boolean"},
     "allow_pre_briefed": {"type": "boolean"},
     "tracking_enabled": {"type": "boolean"},

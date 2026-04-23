@@ -38,7 +38,7 @@ Validation method: check each capability is represented by prompt/policy/schema/
 - [x] P0 route mode handling policy -> `repos/factory-control-plane/policies/orchestration_policy.md`
 - [x] Pre-briefed synthetic P1 behavior -> `repos/factory-control-plane/policies/orchestration_policy.md`
 - [x] P5 skip when release blocked -> `repos/factory-control-plane/workflows/pipeline_dag.json`
-- [x] P6 optional by toggle -> `repos/factory-control-plane/workflows/pipeline_dag.json`
+- [x] P6 mandatory final learning stage -> `repos/factory-control-plane/workflows/pipeline_dag.json`
 - [x] Stage handoff required before next stage -> `repos/factory-control-plane/policies/orchestration_policy.md`
 - [x] Stage output contracts represented -> `repos/factory-contracts/schemas/pipeline/stage_contracts.schema.json`
 - [x] Coordinator input envelope -> `repos/factory-contracts/schemas/envelope/coordinator_input.schema.json`
@@ -67,7 +67,7 @@ Validation method: check each capability is represented by prompt/policy/schema/
 - [x] Judge decision + confidence contract -> `repos/factory-contracts/schemas/envelope/quorum_issue.schema.json`
 - [x] Human escalation last resort policy -> `repos/factory-control-plane/policies/quorum_and_escalation_policy.md`
 - [x] Escalation payload contract -> `repos/factory-contracts/schemas/envelope/escalation_request.schema.json`
-- [x] Human gate checkpoints after P1/P2/P4 -> `repos/factory-control-plane/policies/orchestration_policy.md`
+- [x] Human gate checkpoints after every stage with explicit approval -> `repos/factory-control-plane/policies/orchestration_policy.md`
 
 ## F. Persistence, Tracking, Memory, Metrics
 

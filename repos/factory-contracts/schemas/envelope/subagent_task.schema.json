@@ -1,4 +1,4 @@
-﻿{
+{
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "SubagentTask",
   "type": "object",
@@ -10,12 +10,57 @@
     "role": {"type": "string"},
     "objective": {"type": "string"},
     "input": {"type": "object", "additionalProperties": true},
+    "input_artifact_refs": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
     "dependencies": {
       "type": "array",
       "items": {"type": "string"}
     },
     "priority": {"type": "integer", "minimum": 1, "maximum": 5},
-    "deadline_seconds": {"type": ["integer", "null"], "minimum": 1}
+    "deadline_seconds": {"type": ["integer", "null"], "minimum": 1},
+    "task_slice_size": {
+      "type": "string",
+      "enum": ["tiny", "small", "medium"]
+    },
+    "context_budget_hint": {
+      "type": "string",
+      "enum": ["tiny", "small", "medium"]
+    },
+    "expected_output_artifacts": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "output_schema_ref": {"type": ["string", "null"]},
+    "must_read_repos": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "must_write_repos": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "persistence_targets": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "acceptance_checks": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "debate_context": {
+      "type": "object",
+      "properties": {
+        "debate_id": {"type": ["string", "null"]},
+        "position_to_argue": {"type": ["string", "null"]},
+        "questions_to_answer": {
+          "type": "array",
+          "items": {"type": "string"}
+        }
+      },
+      "additionalProperties": false
+    }
   },
   "additionalProperties": false
 }

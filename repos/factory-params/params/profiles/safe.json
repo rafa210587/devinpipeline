@@ -2,13 +2,18 @@
   "profile": "safe",
   "max_concurrency": 3,
   "human_gates": {
+    "after_p0": true,
     "after_p1": true,
     "after_p2": true,
-    "after_p4": true
+    "after_p3": true,
+    "after_p4": true,
+    "after_p5": true,
+    "after_p6": true,
+    "require_explicit_approval": true
   },
   "timeouts": {
     "build": 18000,
     "validate": 10800
   },
-  "learning_enabled": true
+  "learning_mandatory": true
 }

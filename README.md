@@ -1,26 +1,24 @@
-﻿# Devin Factory V2 - Agent-First
+﻿# Factory Control Plane
 
-Este projeto foi migrado para arquitetura agent-first com prompt unico de execucao.
+This repo owns orchestration behavior.
 
-## Ponto de entrada
-- `repos/factory-control-plane/prompts/master_pipeline_prompt.md`
-- Coordinator inicial central: `Factory Control-Plane Agent`, que opera a sessao raiz e materializa a coordenacao via `pipeline_global_orchestrator`
+## Main files
+- `playbooks/packages/shared/pipeline_global_orchestrator.md`: canonical root orchestrator for full P0->P6 execution.
+- `prompts/master_pipeline_prompt.md`: bootstrap-only wrapper used to start the root session.
+- `policies/orchestration_policy.md`: stage state machine and handoff rules.
+- `policies/scheduler_policy.md`: dependency-aware parallel dispatch for P3 module work.
+- `policies/quorum_and_escalation_policy.md`: internal debate and last-resort human escalation.
+- `workflows/pipeline_dag.json`: stage DAG and required artifacts.
+- `workflows/resume_map.json`: resume behavior from each stage.
 
-## Documentacao principal
-- `repos/factory-control-plane/docs/DOCUMENTATION_INDEX.md`
-- `repos/factory-control-plane/docs/SCHEDULER_AND_DAG.md`
-- `repos/PARITY_VALIDATION.md`
+## High-level guide
+- `repos/READMEGeral.md`: project-wide explanation, architecture, flow, and usage guide.
+- `GUIA_COMPLETO_DO_PROJETO.md`: root-level complete guide with flow, usage, prompt practices, folder mapping, and repo references.
 
-## Estrutura de repos internos
-- `repos/factory-control-plane`
-- `repos/factory-contracts`
-- `repos/factory-params`
-- `repos/architecture-reference`
-- `repos/skills-reference`
-- `repos/refinement-support`
-- `repos/factory-memory-knowledge`
-- `repos/factory-runtime-data`
-- `repos/project-target-repos`
+## Entry contract
+- Root coordinator model: `Factory Control-Plane Agent`
+- Canonical execution contract: `pipeline_global_orchestrator`
+- `master_pipeline_prompt.md` is not the source of truth for pipeline logic
 
-## Observacao
-O projeto agora assume operacao agent-first. A governanca, os contratos e o runtime canonico vivem em `repos/`.
+## Contract requirement
+All coordinator/subagent messages must validate against schemas in `../factory-contracts`.

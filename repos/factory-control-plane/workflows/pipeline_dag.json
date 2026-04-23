@@ -1,5 +1,10 @@
 ﻿{
   "version": "1.0.0",
+  "transition_policy": {
+    "review_summary_required_after_every_stage": true,
+    "human_approval_required_before_next_stage": true,
+    "final_stage_review_required": true
+  },
   "stages": [
     {
       "id": "p0",
@@ -42,8 +47,7 @@
       "id": "p6",
       "name": "learning",
       "depends_on": ["p5"],
-      "required_output": "p_6_learning.json",
-      "optional_by_toggle": "runtime.learning.enabled"
+      "required_output": "p_6_learning.json"
     }
   ]
 }

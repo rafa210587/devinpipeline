@@ -57,14 +57,30 @@
       "docs": 3600,
       "learning": 3600
     },
+    "pipeline": {
+      "stage_order": [
+        "P0",
+        "P1",
+        "P2",
+        "P3",
+        "P4",
+        "P5",
+        "P6"
+      ],
+      "p5_requires_release_approved": true,
+      "p6_owner_stage": "P6",
+      "p6_is_mandatory": true,
+      "require_stage_review_before_transition": true
+    },
     "p0": {
       "enabled": true,
       "default_route_mode": "seed_to_brief",
       "allow_pre_briefed": true
     },
     "learning": {
-      "enabled": false,
-      "max_wait_seconds": 3600
+      "max_wait_seconds": 3600,
+      "mandatory": true,
+      "promotion_policy": "always_run_at_pipeline_end"
     },
     "tracking": {
       "enabled": true,
@@ -80,9 +96,14 @@
       "summary_md": "memory/MEMORY_LOG.md"
     },
     "human_gates": {
-      "after_p1": false,
-      "after_p2": false,
-      "after_p4": false
+      "after_p0": true,
+      "after_p1": true,
+      "after_p2": true,
+      "after_p3": true,
+      "after_p4": true,
+      "after_p5": true,
+      "after_p6": true,
+      "require_explicit_approval": true
     },
     "terminal_proxy": {
       "enabled": true,
@@ -137,8 +158,14 @@
   },
   "agent_runtime": {
     "default_max_concurrency": 2,
-    "control_plane_prompt": "repos/factory-control-plane/prompts/master_pipeline_prompt.md",
     "root_orchestrator": "playbooks/packages/shared/pipeline_global_orchestrator.md",
+    "control_plane_prompt": "repos/factory-control-plane/prompts/master_pipeline_prompt.md",
+    "entrypoint": {
+      "mode": "root_orchestrator_first",
+      "canonical_execution_contract": "root_orchestrator",
+      "control_plane_prompt_role": "bootstrap_only",
+      "user_entry_requires_master_prompt": false
+    },
     "logs_dir": "repos/factory-runtime-data/factory_runs/_parallel_logs"
   },
   "references": {
