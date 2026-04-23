@@ -1,0 +1,64 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "FactoryToggles",
+  "type": "object",
+  "required": [
+    "transport_mode",
+    "max_concurrency",
+    "human_gates",
+    "timeouts",
+    "learning_enabled",
+    "p0_enabled",
+    "allow_pre_briefed",
+    "tracking_enabled",
+    "memory_enabled",
+    "eval_metrics_enabled",
+    "git_sync"
+  ],
+  "properties": {
+    "transport_mode": {"type": "string", "enum": ["http", "mcp"]},
+    "max_concurrency": {"type": "integer", "minimum": 1},
+    "human_gates": {
+      "type": "object",
+      "required": ["after_p1", "after_p2", "after_p4"],
+      "properties": {
+        "after_p1": {"type": "boolean"},
+        "after_p2": {"type": "boolean"},
+        "after_p4": {"type": "boolean"}
+      },
+      "additionalProperties": false
+    },
+    "timeouts": {
+      "type": "object",
+      "required": ["intake", "brief", "tech", "build", "validate", "docs", "learning", "waiting_detail"],
+      "properties": {
+        "intake": {"type": "integer", "minimum": 1},
+        "brief": {"type": "integer", "minimum": 1},
+        "tech": {"type": "integer", "minimum": 1},
+        "build": {"type": "integer", "minimum": 1},
+        "validate": {"type": "integer", "minimum": 1},
+        "docs": {"type": "integer", "minimum": 1},
+        "learning": {"type": "integer", "minimum": 1},
+        "waiting_detail": {"type": "integer", "minimum": 1}
+      },
+      "additionalProperties": false
+    },
+    "learning_enabled": {"type": "boolean"},
+    "p0_enabled": {"type": "boolean"},
+    "allow_pre_briefed": {"type": "boolean"},
+    "tracking_enabled": {"type": "boolean"},
+    "memory_enabled": {"type": "boolean"},
+    "eval_metrics_enabled": {"type": "boolean"},
+    "git_sync": {
+      "type": "object",
+      "required": ["enabled", "auto_commit", "auto_push"],
+      "properties": {
+        "enabled": {"type": "boolean"},
+        "auto_commit": {"type": "boolean"},
+        "auto_push": {"type": "boolean"}
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": true
+}

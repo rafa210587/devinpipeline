@@ -1,0 +1,110 @@
+{
+  "type": "object",
+  "required": [
+    "briefing"
+  ],
+  "properties": {
+    "briefing": {
+      "type": "object",
+      "required": [
+        "name",
+        "slug",
+        "profile",
+        "description",
+        "goals",
+        "requirements",
+        "stories"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "slug": {
+          "type": "string"
+        },
+        "profile": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "goals": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1
+        },
+        "users": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "requirements": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1
+        },
+        "stories": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "id",
+              "title",
+              "context",
+              "behavior",
+              "acceptance"
+            ],
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "title": {
+                "type": "string"
+              },
+              "context": {
+                "type": "string",
+                "minLength": 60
+              },
+              "behavior": {
+                "type": "string",
+                "minLength": 60
+              },
+              "acceptance": {
+                "type": "array",
+                "minItems": 3,
+                "maxItems": 5,
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "minItems": 6
+        },
+        "constraints": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "domain_rules": {
+          "type": "object"
+        },
+        "non_functional": {
+          "type": "object"
+        },
+        "open_questions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

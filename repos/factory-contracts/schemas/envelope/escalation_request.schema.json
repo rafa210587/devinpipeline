@@ -1,0 +1,21 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "EscalationRequest",
+  "type": "object",
+  "required": ["run_id", "stage", "escalate", "reason", "attempts", "evidence", "recommended_default"],
+  "properties": {
+    "run_id": {"type": "string"},
+    "stage": {"type": "string"},
+    "escalate": {"type": "boolean"},
+    "reason": {"type": "string"},
+    "attempts": {"type": "integer", "minimum": 1},
+    "risk_level": {"type": "string", "enum": ["low", "medium", "high", "critical"]},
+    "evidence": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"type": "string"}
+    },
+    "recommended_default": {"type": "string"}
+  },
+  "additionalProperties": false
+}

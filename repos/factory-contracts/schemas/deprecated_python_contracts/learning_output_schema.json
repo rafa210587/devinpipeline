@@ -1,0 +1,57 @@
+{
+  "type": "object",
+  "required": [
+    "status",
+    "ledger_patch",
+    "memory_summary",
+    "knowledge_summary",
+    "promotion_summary",
+    "artifacts"
+  ],
+  "properties": {
+    "status": {
+      "type": "string",
+      "enum": ["completed", "failed"]
+    },
+    "ledger_patch": {"type": "object"},
+    "memory_summary": {
+      "type": "object",
+      "required": [
+        "episodic_count",
+        "semantic_candidates_count",
+        "semantic_approved_count"
+      ],
+      "properties": {
+        "episodic_count": {"type": "integer"},
+        "semantic_candidates_count": {"type": "integer"},
+        "semantic_approved_count": {"type": "integer"}
+      }
+    },
+    "knowledge_summary": {
+      "type": "object",
+      "required": [
+        "notes_generated",
+        "notes_published"
+      ],
+      "properties": {
+        "notes_generated": {"type": "integer"},
+        "notes_published": {"type": "integer"}
+      }
+    },
+    "promotion_summary": {
+      "type": "object",
+      "required": [
+        "project_promotions",
+        "global_promotions",
+        "rejections"
+      ],
+      "properties": {
+        "project_promotions": {"type": "integer"},
+        "global_promotions": {"type": "integer"},
+        "rejections": {"type": "integer"}
+      }
+    },
+    "artifacts": {"type": "object"},
+    "reason": {"type": "string"}
+  }
+}

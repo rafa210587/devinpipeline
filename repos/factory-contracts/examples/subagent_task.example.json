@@ -1,0 +1,14 @@
+﻿{
+  "run_id": "run_2026_04_22_001",
+  "stage": "p3",
+  "task_id": "build_module_api_auth",
+  "role": "builder",
+  "objective": "Implement module api/auth.py according to contract",
+  "input": {
+    "module_file": "api/auth.py",
+    "depends_on": ["core/models.py"]
+  },
+  "dependencies": ["core/models.py"],
+  "priority": 2,
+  "deadline_seconds": 1800
+}

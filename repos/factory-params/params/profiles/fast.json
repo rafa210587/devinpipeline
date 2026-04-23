@@ -1,0 +1,14 @@
+﻿{
+  "profile": "fast",
+  "max_concurrency": 6,
+  "human_gates": {
+    "after_p1": false,
+    "after_p2": false,
+    "after_p4": false
+  },
+  "timeouts": {
+    "build": 10800,
+    "validate": 5400
+  },
+  "learning_enabled": false
+}

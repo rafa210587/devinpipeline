@@ -1,0 +1,67 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CoordinatorInput",
+  "type": "object",
+  "required": ["run_id", "stage", "objective", "params_profile", "repos"],
+  "properties": {
+    "run_id": {"type": "string", "minLength": 1},
+    "stage": {"type": "string", "enum": ["p0", "p1", "p2", "p3", "p4", "p5", "p6"]},
+    "objective": {"type": "string", "minLength": 1},
+    "params_profile": {"type": "string"},
+    "resume_from": {"type": ["string", "null"]},
+    "input_artifacts": {
+      "type": "object",
+      "additionalProperties": {"type": "string"}
+    },
+    "repos": {
+      "type": "object",
+      "required": [
+        "control_plane",
+        "contracts",
+        "params",
+        "architecture_reference",
+        "skills_reference",
+        "refinement_support",
+        "memory_knowledge",
+        "runtime_data",
+        "target_repos"
+      ],
+      "properties": {
+        "control_plane": {"type": "string"},
+        "contracts": {"type": "string"},
+        "params": {"type": "string"},
+        "architecture_reference": {"type": "string"},
+        "skills_reference": {"type": "string"},
+        "refinement_support": {"type": "string"},
+        "memory_knowledge": {"type": "string"},
+        "runtime_data": {"type": "string"},
+        "target_repos": {"type": "string"}
+      }
+    },
+    "repo_fallbacks_file": {"type": ["string", "null"]},
+    "repo_fallbacks": {
+      "type": "object",
+      "properties": {
+        "control_plane": {"type": "object", "additionalProperties": true},
+        "contracts": {"type": "object", "additionalProperties": true},
+        "params": {"type": "object", "additionalProperties": true},
+        "architecture_reference": {"type": "object", "additionalProperties": true},
+        "skills_reference": {"type": "object", "additionalProperties": true},
+        "refinement_support": {"type": "object", "additionalProperties": true},
+        "memory_knowledge": {"type": "object", "additionalProperties": true},
+        "runtime_data": {"type": "object", "additionalProperties": true},
+        "target_repos": {"type": "object", "additionalProperties": true}
+      },
+      "additionalProperties": false
+    },
+    "toggles": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "handoff_context": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false
+}

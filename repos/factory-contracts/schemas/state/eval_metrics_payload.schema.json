@@ -1,0 +1,17 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "EvalMetricsPayload",
+  "type": "object",
+  "required": ["generated_at_utc", "slug", "trigger_pipeline", "stage_status", "quality_scores"],
+  "properties": {
+    "generated_at_utc": {"type": "string"},
+    "slug": {"type": "string"},
+    "trigger_pipeline": {"type": "string"},
+    "stage_status": {"type": "object", "additionalProperties": {"type": ["string", "null"]}},
+    "stage_completion_rate": {"type": ["number", "null"]},
+    "release_decision": {"type": ["string", "null"]},
+    "quality_scores": {"type": "object", "additionalProperties": true},
+    "classification_metrics": {"type": "object", "additionalProperties": true}
+  },
+  "additionalProperties": true
+}

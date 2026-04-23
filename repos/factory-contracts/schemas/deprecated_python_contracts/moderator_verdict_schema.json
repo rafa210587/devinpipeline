@@ -1,0 +1,149 @@
+{
+  "type": "object",
+  "required": [
+    "executive_summary",
+    "critical_issues_consolidated",
+    "ready_for_factory",
+    "refined_briefing"
+  ],
+  "properties": {
+    "executive_summary": {
+      "type": "string"
+    },
+    "critical_issues_consolidated": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "changes_made": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "changes_rejected": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "change",
+          "reason"
+        ],
+        "properties": {
+          "change": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ready_for_factory": {
+      "type": "boolean"
+    },
+    "refined_briefing": {
+      "type": "object",
+      "required": [
+        "name",
+        "slug",
+        "profile",
+        "description",
+        "goals",
+        "requirements",
+        "stories"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "slug": {
+          "type": "string"
+        },
+        "profile": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "goals": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1
+        },
+        "users": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "requirements": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1
+        },
+        "stories": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "id",
+              "title",
+              "context",
+              "behavior",
+              "acceptance"
+            ],
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "title": {
+                "type": "string"
+              },
+              "context": {
+                "type": "string",
+                "minLength": 60
+              },
+              "behavior": {
+                "type": "string",
+                "minLength": 60
+              },
+              "acceptance": {
+                "type": "array",
+                "minItems": 3,
+                "maxItems": 5,
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "minItems": 6
+        },
+        "constraints": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "domain_rules": {
+          "type": "object"
+        },
+        "non_functional": {
+          "type": "object"
+        },
+        "open_questions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

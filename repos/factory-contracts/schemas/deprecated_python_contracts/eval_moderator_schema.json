@@ -1,0 +1,46 @@
+{
+  "type": "object",
+  "required": [
+    "approved",
+    "decisions_preserved",
+    "completeness_ok"
+  ],
+  "properties": {
+    "approved": {
+      "type": "boolean"
+    },
+    "critical_issues_coverage": {
+      "type": "array"
+    },
+    "decisions_preserved": {
+      "type": "boolean"
+    },
+    "decisions_lost": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "story_quality_issues": {
+      "type": "array"
+    },
+    "consistency_issues": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "moderator_rules_violated": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "completeness_ok": {
+      "type": "boolean"
+    },
+    "feedback": {
+      "type": "string"
+    }
+  }
+}

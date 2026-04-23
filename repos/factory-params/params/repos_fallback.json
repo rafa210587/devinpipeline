@@ -1,0 +1,48 @@
+{
+  "control_plane": {
+    "fallback_path": "",
+    "fallback_git_url": "",
+    "branch": "main"
+  },
+  "contracts": {
+    "fallback_path": "",
+    "fallback_git_url": "",
+    "branch": "main"
+  },
+  "params": {
+    "fallback_path": "",
+    "fallback_git_url": "",
+    "branch": "main"
+  },
+  "architecture_reference": {
+    "fallback_path": "",
+    "fallback_git_url": "",
+    "branch": "main"
+  },
+  "skills_reference": {
+    "fallback_path": "",
+    "fallback_git_url": "",
+    "branch": "main"
+  },
+  "refinement_support": {
+    "fallback_path": "",
+    "fallback_git_url": "",
+    "branch": "main"
+  },
+  "memory_knowledge": {
+    "fallback_path": "",
+    "fallback_git_url": "",
+    "branch": "main"
+  },
+  "runtime_data": {
+    "fallback_path": "",
+    "fallback_git_url": "",
+    "branch": "main"
+  },
+  "target_repos": {
+    "fallback_path": "",
+    "fallback_git_url": "",
+    "branch": "main"
+  }
+}
+

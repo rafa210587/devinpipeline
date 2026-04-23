@@ -1,0 +1,49 @@
+﻿{
+  "version": "1.0.0",
+  "stages": [
+    {
+      "id": "p0",
+      "name": "intake",
+      "depends_on": [],
+      "required_output": "p_0_intake.json"
+    },
+    {
+      "id": "p1",
+      "name": "brief",
+      "depends_on": ["p0"],
+      "required_output": "p_1_brief.json"
+    },
+    {
+      "id": "p2",
+      "name": "tech",
+      "depends_on": ["p1"],
+      "required_output": "p_2_tech.json"
+    },
+    {
+      "id": "p3",
+      "name": "build",
+      "depends_on": ["p2"],
+      "required_output": "p_3_build.json"
+    },
+    {
+      "id": "p4",
+      "name": "validate",
+      "depends_on": ["p3"],
+      "required_output": "p_4_validation.json"
+    },
+    {
+      "id": "p5",
+      "name": "docs",
+      "depends_on": ["p4"],
+      "required_output": "p_5_docs.json",
+      "skip_if": "p4.release_decision != approved"
+    },
+    {
+      "id": "p6",
+      "name": "learning",
+      "depends_on": ["p5"],
+      "required_output": "p_6_learning.json",
+      "optional_by_toggle": "runtime.learning.enabled"
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+﻿{
+  "ts_utc": "2026-04-22T22:00:00Z",
+  "run_id": "run_2026_04_22_001",
+  "source_stages": ["p3", "p4", "p6"],
+  "promotion_type": "skill",
+  "scope": "global",
+  "decision": "approved",
+  "rationale": "Pattern repeated successfully across modules and passed validation without regressions.",
+  "confidence": 0.87,
+  "artifact_refs": [
+    "repos/factory-runtime-data/factory_runs/example/p_3_build.json",
+    "repos/factory-runtime-data/factory_runs/example/p_4_validation.json"
+  ]
+}

@@ -1,0 +1,11 @@
+﻿{
+  "control_plane": "repos/factory-control-plane",
+  "contracts": "repos/factory-contracts",
+  "params": "repos/factory-params",
+  "architecture_reference": "repos/architecture-reference",
+  "skills_reference": "repos/skills-reference",
+  "refinement_support": "repos/refinement-support",
+  "memory_knowledge": "repos/factory-memory-knowledge",
+  "runtime_data": "repos/factory-runtime-data",
+  "target_repos": "repos/project-target-repos"
+}

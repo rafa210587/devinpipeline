@@ -1,0 +1,21 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "SubagentTask",
+  "type": "object",
+  "required": ["run_id", "stage", "task_id", "role", "objective", "input", "dependencies", "priority"],
+  "properties": {
+    "run_id": {"type": "string"},
+    "stage": {"type": "string"},
+    "task_id": {"type": "string"},
+    "role": {"type": "string"},
+    "objective": {"type": "string"},
+    "input": {"type": "object", "additionalProperties": true},
+    "dependencies": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "priority": {"type": "integer", "minimum": 1, "maximum": 5},
+    "deadline_seconds": {"type": ["integer", "null"], "minimum": 1}
+  },
+  "additionalProperties": false
+}

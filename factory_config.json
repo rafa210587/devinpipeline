@@ -135,10 +135,11 @@
     "branch": "main",
     "commit_message_template": "devin-factory {pipeline} {ts_utc}"
   },
-  "parallel_runner": {
+  "agent_runtime": {
     "default_max_concurrency": 2,
-    "pipeline_script": "devin_pipeline_v2.py",
-    "logs_dir": "factory_runs/_parallel_logs"
+    "control_plane_prompt": "repos/factory-control-plane/prompts/master_pipeline_prompt.md",
+    "root_orchestrator": "playbooks/packages/shared/pipeline_global_orchestrator.md",
+    "logs_dir": "repos/factory-runtime-data/factory_runs/_parallel_logs"
   },
   "references": {
     "skill_registry": "[SKILL/FILE] /workspace/.agents/skills/",

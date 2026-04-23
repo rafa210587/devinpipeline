@@ -1,0 +1,20 @@
+﻿{
+  "run_mode": "full",
+  "project": {
+    "name": "example_project",
+    "slug": "example_project"
+  },
+  "seed": {
+    "prompt": "Build a robust internal dashboard with role-based access and audit logs.",
+    "repo_manifest": [
+      {
+        "name": "target-app",
+        "url": "https://example.com/target-app.git",
+        "branch": "main",
+        "role": "target",
+        "access": "write"
+      }
+    ]
+  },
+  "params_profile": "safe"
+}

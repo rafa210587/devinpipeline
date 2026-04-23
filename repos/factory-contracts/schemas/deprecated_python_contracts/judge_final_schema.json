@@ -1,0 +1,80 @@
+{
+  "type": "object",
+  "required": [
+    "approved",
+    "score",
+    "scores_by_dimension",
+    "reasoning"
+  ],
+  "properties": {
+    "approved": {
+      "type": "boolean"
+    },
+    "score": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 10
+    },
+    "scores_by_dimension": {
+      "type": "object",
+      "required": [
+        "task_completeness",
+        "architectural_coherence",
+        "test_adequacy",
+        "operational_readiness",
+        "security_posture",
+        "executability"
+      ],
+      "properties": {
+        "task_completeness": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 10
+        },
+        "architectural_coherence": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 10
+        },
+        "test_adequacy": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 10
+        },
+        "operational_readiness": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 10
+        },
+        "security_posture": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 10
+        },
+        "executability": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 10
+        }
+      }
+    },
+    "release_blockers": {
+      "type": "array"
+    },
+    "residual_risks": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "reasoning": {
+      "type": "string"
+    },
+    "qa_consolidator_respected": {
+      "type": "boolean"
+    },
+    "summary": {
+      "type": "string"
+    }
+  }
+}

@@ -1,0 +1,18 @@
+﻿{
+  "max_concurrency": 2,
+  "jobs": [
+    {
+      "name": "pokemon_full_run",
+      "pipeline": "full",
+      "input_artifact": "repos/factory-runtime-data/factory_runs/pokemon/input.json",
+      "output_dir": "repos/factory-runtime-data/factory_runs/pokemon"
+    },
+    {
+      "name": "ecommerce_resume_build",
+      "pipeline": "resume",
+      "input_artifact": "repos/factory-runtime-data/factory_runs/ecommerce",
+      "output_dir": "repos/factory-runtime-data/factory_runs/ecommerce",
+      "resume_from": "build"
+    }
+  ]
+}

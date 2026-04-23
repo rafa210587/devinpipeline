@@ -1,0 +1,47 @@
+﻿{
+  "transport_mode": "http",
+  "max_concurrency": 4,
+  "human_gates": {
+    "after_p1": false,
+    "after_p2": false,
+    "after_p4": false
+  },
+  "timeouts": {
+    "intake": 1800,
+    "brief": 7200,
+    "tech": 5400,
+    "build": 14400,
+    "validate": 7200,
+    "docs": 3600,
+    "learning": 3600,
+    "waiting_detail": 1800
+  },
+  "learning_enabled": true,
+  "p0_enabled": true,
+  "allow_pre_briefed": true,
+  "tracking_enabled": true,
+  "memory_enabled": true,
+  "eval_metrics_enabled": true,
+  "eval_metrics_report_mode": "deterministic",
+  "terminal_proxy": {
+    "enabled": true,
+    "mirror_session_messages": true,
+    "allow_input_during_wait": true,
+    "announce_waiting_hint": true,
+    "max_message_chars": 16000
+  },
+  "session_defaults": {
+    "use_repo_manifest_as_repos": true,
+    "repos": [],
+    "knowledge_ids": [],
+    "secret_ids": [],
+    "bypass_approval": false,
+    "stage_overrides": {}
+  },
+  "git_sync": {
+    "enabled": false,
+    "auto_commit": false,
+    "auto_push": false,
+    "branch": "main"
+  }
+}

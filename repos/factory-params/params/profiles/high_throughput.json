@@ -1,0 +1,14 @@
+﻿{
+  "profile": "high_throughput",
+  "max_concurrency": 8,
+  "human_gates": {
+    "after_p1": false,
+    "after_p2": false,
+    "after_p4": false
+  },
+  "timeouts": {
+    "build": 14400,
+    "validate": 7200
+  },
+  "learning_enabled": true
+}

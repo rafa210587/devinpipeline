@@ -1,0 +1,34 @@
+{
+  "type": "object",
+  "required": [
+    "approved",
+    "pairs_checked",
+    "smoke_results"
+  ],
+  "properties": {
+    "approved": {
+      "type": "boolean"
+    },
+    "pairs_checked": {
+      "type": "array"
+    },
+    "inconsistencies": {
+      "type": "array"
+    },
+    "circular_dependencies": {
+      "type": "array"
+    },
+    "undeclared_dependencies": {
+      "type": "array"
+    },
+    "workspace_vs_plan": {
+      "type": "object"
+    },
+    "smoke_results": {
+      "type": "array"
+    },
+    "summary": {
+      "type": "string"
+    }
+  }
+}

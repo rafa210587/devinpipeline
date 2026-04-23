@@ -1,0 +1,44 @@
+{
+  "type": "object",
+  "required": [
+    "approved"
+  ],
+  "properties": {
+    "approved": {
+      "type": "boolean"
+    },
+    "coverage_gaps": {
+      "type": "array"
+    },
+    "overlap_issues": {
+      "type": "array"
+    },
+    "granularity_issues": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "catchall_modules": {
+      "type": "array"
+    },
+    "explicit_separation_violated": {
+      "type": "array"
+    },
+    "role_inconsistencies": {
+      "type": "array"
+    },
+    "dependency_issues": {
+      "type": "array"
+    },
+    "role_distribution_issue": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "feedback": {
+      "type": "string"
+    }
+  }
+}

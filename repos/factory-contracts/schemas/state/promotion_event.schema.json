@@ -1,0 +1,41 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "PromotionEvent",
+  "type": "object",
+  "required": [
+    "ts_utc",
+    "run_id",
+    "promotion_type",
+    "scope",
+    "decision",
+    "rationale",
+    "confidence"
+  ],
+  "properties": {
+    "ts_utc": {"type": "string"},
+    "run_id": {"type": "string"},
+    "source_stages": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "promotion_type": {
+      "type": "string",
+      "enum": ["memory", "knowledge", "skill"]
+    },
+    "scope": {
+      "type": "string",
+      "enum": ["project", "global"]
+    },
+    "decision": {
+      "type": "string",
+      "enum": ["approved", "rejected"]
+    },
+    "rationale": {"type": "string"},
+    "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+    "artifact_refs": {
+      "type": "array",
+      "items": {"type": "string"}
+    }
+  },
+  "additionalProperties": false
+}

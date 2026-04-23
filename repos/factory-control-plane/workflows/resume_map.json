@@ -1,0 +1,25 @@
+﻿{
+  "version": "1.0.0",
+  "resume_points": {
+    "tech": {
+      "required_artifacts": ["p_1_brief.json"],
+      "run_sequence": ["p2", "p3", "p4", "p5", "p6"]
+    },
+    "build": {
+      "required_artifacts": ["p_1_brief.json", "p_2_tech.json"],
+      "run_sequence": ["p3", "p4", "p5", "p6"]
+    },
+    "validate": {
+      "required_artifacts": ["p_1_brief.json", "p_2_tech.json", "p_3_build.json"],
+      "run_sequence": ["p4", "p5", "p6"]
+    },
+    "docs": {
+      "required_artifacts": ["p_1_brief.json", "p_2_tech.json", "p_4_validation.json"],
+      "run_sequence": ["p5", "p6"]
+    },
+    "learn": {
+      "required_artifacts": ["p_1_brief.json"],
+      "run_sequence": ["p6"]
+    }
+  }
+}

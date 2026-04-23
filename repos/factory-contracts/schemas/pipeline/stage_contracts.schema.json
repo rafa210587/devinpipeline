@@ -1,0 +1,16 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "PipelineStageContracts",
+  "type": "object",
+  "required": ["p0", "p1", "p2", "p3", "p4", "p5", "p6"],
+  "properties": {
+    "p0": {"type": "object", "required": ["status", "route_mode", "project_context", "intake_contract"]},
+    "p1": {"type": "object", "required": ["status", "briefing", "ready_for_factory"]},
+    "p2": {"type": "object", "required": ["status", "tasks_md", "build_plan", "integration_map", "contracts", "observability_plan"]},
+    "p3": {"type": "object", "required": ["status", "per_file_verdicts", "failed_files", "test_evidence_summary"]},
+    "p4": {"type": "object", "required": ["status", "judge_verdict", "release_decision", "release_blockers_summary"]},
+    "p5": {"type": "object", "required": ["status"]},
+    "p6": {"type": "object", "required": ["status", "ledger_patch", "memory_summary", "knowledge_summary", "promotion_summary", "artifacts"]}
+  },
+  "additionalProperties": false
+}

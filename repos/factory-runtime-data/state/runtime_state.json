@@ -1,0 +1,13 @@
+﻿{
+  "run_id": "",
+  "current_stage": "",
+  "updated_at_utc": "",
+  "stage_status": {},
+  "task_graph": {
+    "nodes": [],
+    "edges": [],
+    "ready_queue": [],
+    "in_progress": [],
+    "done": []
+  }
+}

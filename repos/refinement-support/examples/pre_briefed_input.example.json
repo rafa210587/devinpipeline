@@ -1,0 +1,11 @@
+﻿{
+  "briefing": {
+    "name": "sample_pre_briefed_project",
+    "slug": "sample_pre_briefed_project",
+    "profile": "generic",
+    "description": "Pre-briefed project sample",
+    "goals": ["deliver MVP with observability"],
+    "requirements": ["auth", "audit", "reporting"],
+    "stories": []
+  }
+}

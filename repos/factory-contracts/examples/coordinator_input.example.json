@@ -1,0 +1,21 @@
+﻿{
+  "run_id": "run_2026_04_22_001",
+  "stage": "p3",
+  "objective": "Build modules using dependency-aware dispatch",
+  "params_profile": "safe",
+  "repos": {
+    "control_plane": "repos/factory-control-plane",
+    "contracts": "repos/factory-contracts",
+    "params": "repos/factory-params",
+    "architecture_reference": "repos/architecture-reference",
+    "skills_reference": "repos/skills-reference",
+    "refinement_support": "repos/refinement-support",
+    "memory_knowledge": "repos/factory-memory-knowledge",
+    "runtime_data": "repos/factory-runtime-data",
+    "target_repos": "repos/project-target-repos"
+  },
+  "repo_fallbacks_file": "repos/factory-params/params/repos_fallback.json",
+  "input_artifacts": {
+    "p2": "repos/factory-runtime-data/factory_runs/example/p_2_tech.json"
+  }
+}
