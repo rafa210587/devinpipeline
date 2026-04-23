@@ -425,6 +425,9 @@ No Devin:
 5. configure comandos de manutencao, lint e teste por repo;
 6. rode verificacao dos comandos quando possivel.
 
+Depois disso, alinhe `repos/factory-params/params/repos.json` com os paths reais que aparecem dentro da sessao Devin.
+O arquivo `repos.json` nao substitui o Repo Setup do Devin; ele apenas da aos agents um mapa canonico dos caminhos ja disponiveis.
+
 Repos que devem estar acessiveis:
 
 - repo da factory contendo `factory_config.json`, `playbooks/` e `repos/`;
@@ -443,6 +446,7 @@ Indexe no Devin:
 
 A indexacao ajuda o Devin a recuperar contexto por Ask Devin/DeepWiki e melhora a descoberta de informacoes entre sessoes.
 Repo Setup e indexacao sao coisas diferentes: Repo Setup prepara ambiente de desenvolvimento; indexacao melhora busca e compreensao de codigo.
+Para a factory, os dois importam: Repo Setup garante que o agent consiga ler/editar arquivos; indexacao melhora recuperacao sem precisar carregar contexto gigante.
 
 ### 4) Criar ou anexar o playbook raiz
 
@@ -583,6 +587,44 @@ Garanta que cada alias exista:
 Em Devin, os caminhos podem ser diferentes do Windows local.
 Nos playbooks, use `/workspace/...`.
 Na documentacao local, use paths relativos ao repo.
+
+Regra importante:
+
+- `repos.json` deve apontar para **paths acessiveis dentro do workspace da sessao Devin**.
+- Nao coloque apenas uma URL Git em `repos.json` esperando que o agent leia o repo remoto como filesystem.
+- URLs Git, branches e mirrors entram em `repos_fallback.json` ou na configuracao nativa de repos do Devin.
+- Antes da run, o repo precisa estar conectado/autorizado no Devin e, se for editado, clonado ou montado no ambiente da sessao.
+- Se a sessao for criada via API/MCP, passe tambem os repos necessarios no payload/parametros da sessao quando aplicavel.
+
+Exemplo quando tudo estiver em repos Git separados:
+
+```json
+{
+  "control_plane": "/workspace/factory-control-plane",
+  "contracts": "/workspace/factory-contracts",
+  "params": "/workspace/factory-params",
+  "architecture_reference": "/workspace/architecture-reference",
+  "refinement_support": "/workspace/refinement-support",
+  "memory_knowledge": "/workspace/factory-memory-knowledge",
+  "runtime_data": "/workspace/factory-runtime-data",
+  "target_repos": "/workspace/app-target"
+}
+```
+
+Exemplo de fallback:
+
+```json
+{
+  "target_repos": {
+    "fallback_path": "",
+    "fallback_git_url": "git@github.com:org/app-target.git",
+    "branch": "main"
+  }
+}
+```
+
+Na pratica, `repos.json` responde: "onde esta o conteudo agora para esta sessao?".
+`repos_fallback.json` responde: "se nao estiver no path esperado, qual origem/mirror posso tentar resolver?".
 
 ### 10) Instrumentar runtime data
 

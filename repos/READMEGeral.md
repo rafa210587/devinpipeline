@@ -96,6 +96,22 @@ Nos envelopes:
 - `CoordinatorInput` expõe roots de skills, memory, knowledge e AR.
 - `SubagentTask` passa refs especificas por task (`selected_skill_refs`, `memory_refs`, `knowledge_refs`, `architecture_reference_refs`).
 
+## Como amarrar repos Git no Devin
+
+`repos/factory-params/params/repos.json` nao e uma lista de endpoints Git.
+Ele e o mapa de caminhos que a sessao Devin consegue acessar.
+
+Regra:
+- use `repos.json` para paths visiveis no workspace da sessao;
+- use `repos_fallback.json` para mirror path ou `fallback_git_url`;
+- configure e clone/indexe os repos no Devin antes de esperar que os agents leiam ou editem esses repos;
+- quando criar sessoes via API/MCP, inclua os repos necessarios no payload/parametros da sessao quando o runtime exigir.
+
+Exemplo conceitual:
+- se Devin clona um repo alvo em `/workspace/app-backend`, `target_repos` pode apontar para `/workspace/app-backend`;
+- se a factory mantiver os repos alvo dentro dela, `target_repos` pode continuar apontando para `repos/project-target-repos`;
+- se o repo ainda nao estiver clonado, coloque o Git URL em `repos_fallback.json`, mas trate como fallback que precisa ser resolvido antes de editar.
+
 ## Fluxo completo da pipeline
 
 ### P0 - Intake

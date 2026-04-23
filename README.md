@@ -32,3 +32,6 @@ All canonical playbooks expose AR, memory, knowledge, and skills references:
 - Devin skills: `/workspace/.agents/skills/`
 - Factory skill registry: `repos/factory-memory-knowledge/skills/skill_registry.json`
 - Factory memory/knowledge: `repos/factory-memory-knowledge/memory` and `repos/factory-memory-knowledge/knowledge`
+
+## Repository binding
+Use `repos/factory-params/params/repos.json` for paths that exist inside the Devin session workspace. Use `repos_fallback.json` or Devin repo setup for Git URLs and fallback metadata.
