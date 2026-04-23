@@ -8,6 +8,11 @@
     "module_file": "api/auth.py",
     "depends_on": ["core/models.py"]
   },
+  "skill_registry_ref": "repos/factory-memory-knowledge/skills/skill_registry.json",
+  "selected_skill_refs": [],
+  "memory_refs": ["repos/factory-memory-knowledge/memory/MEMORY_LOG.md"],
+  "knowledge_refs": [],
+  "architecture_reference_refs": ["repos/architecture-reference/INDEX.md"],
   "dependencies": ["core/models.py"],
   "priority": 2,
   "deadline_seconds": 1800

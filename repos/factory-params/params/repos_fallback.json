@@ -19,11 +19,6 @@
     "fallback_git_url": "",
     "branch": "main"
   },
-  "skills_reference": {
-    "fallback_path": "",
-    "fallback_git_url": "",
-    "branch": "main"
-  },
   "refinement_support": {
     "fallback_path": "",
     "fallback_git_url": "",
@@ -45,4 +40,3 @@
     "branch": "main"
   }
 }
-

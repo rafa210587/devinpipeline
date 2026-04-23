@@ -48,29 +48,53 @@ Aqui ficam os repos internos que substituem o antigo runtime Python:
    Parametros, perfis, toggles e mapa de repos.
 4. `repos/architecture-reference`
    Guardrails, patterns e referencias arquiteturais.
-5. `repos/skills-reference`
-   Espelho/referencia dos playbooks e skills.
-6. `repos/refinement-support`
+5. `repos/refinement-support`
    Materiais de apoio para intake e briefing.
-7. `repos/factory-memory-knowledge`
-   Stores de memoria, knowledge, skills e promocoes.
-8. `repos/factory-runtime-data`
+6. `repos/factory-memory-knowledge`
+   Stores de memoria, knowledge, registry de skills e promocoes.
+7. `repos/factory-runtime-data`
    Outputs de run, tracking, metrics, state e locks.
-9. `repos/project-target-repos`
+8. `repos/project-target-repos`
    Repos reais ou templates tocados pela pipeline.
 
-## O que pode parecer confuso na estrutura
+## Fonte canonica dos playbooks
 
-Hoje existem **duas pastas com agents/playbooks**:
+Existe **uma unica fonte local** para agents/playbooks:
+
 - `playbooks/packages`
-- `repos/skills-reference/packages`
 
-O desenho correto e:
-- `playbooks/packages` = fonte canonica de runtime
-- `repos/skills-reference/packages` = espelho/referencia
+Os playbooks serao cadastrados no Devin como skills/playbooks operacionais.
+Por isso o antigo espelho local de playbooks foi removido para evitar divergencia.
 
-Entao, se um playbook mudar em `playbooks/packages`, o espelho em `repos/skills-reference/packages` precisa acompanhar.
-Se isso nao acontecer, a estrutura realmente fica confusa.
+## Fonte canonica de skills
+
+Skills nao ficam duplicadas como playbooks.
+
+As fontes canonicas sao:
+- `/workspace/.agents/skills/`: skills instaladas no Devin.
+- `repos/factory-memory-knowledge/skills/skill_registry.json`: indice governado de skills que os coordinators e subagents podem escolher.
+
+O registry define status, trigger conditions, escopo, roles/stages permitidos e caminho real da skill.
+Child sessions devem receber `skill_registry_ref` e, quando aplicavel, `selected_skill_refs`.
+
+## Contexto comum dos agents
+
+Todos os playbooks em `playbooks/packages` recebem ponteiros explicitos para:
+- `DEVIN_SKILL_REGISTRY`: `/workspace/.agents/skills/`
+- `FACTORY_SKILL_REGISTRY`: `/workspace/repos/factory-memory-knowledge/skills/skill_registry.json`
+- `FACTORY_MEMORY_ROOT`: `/workspace/repos/factory-memory-knowledge/memory/`
+- `FACTORY_KNOWLEDGE_ROOT`: `/workspace/repos/factory-memory-knowledge/knowledge/`
+- `ARR_REFERENCE_INDEX`: `/workspace/architecture-reference/INDEX.md`
+- `ARR_REFERENCE_REPO_FALLBACK_ROOT`: `/workspace/repos/architecture-reference/`
+
+Regra pratica:
+- primeiro usar a fonte primaria quando existir;
+- se a fonte primaria nao estiver disponivel, usar o repo interno/fallback resolvido pelo mapa em `repos/factory-params/params/repos.json`;
+- nunca deixar memory, knowledge ou skill substituir contrato, quorum ou artefato aprovado.
+
+Nos envelopes:
+- `CoordinatorInput` expõe roots de skills, memory, knowledge e AR.
+- `SubagentTask` passa refs especificas por task (`selected_skill_refs`, `memory_refs`, `knowledge_refs`, `architecture_reference_refs`).
 
 ## Fluxo completo da pipeline
 
@@ -272,6 +296,10 @@ Importante:
 - `repos/factory-control-plane/workflows/resume_map.json`
 - `repos/factory-params/params/repos.json`
 - `repos/factory-params/params/repos_fallback.json`
+- `repos/factory-memory-knowledge/memory/`
+- `repos/factory-memory-knowledge/knowledge/`
+- `repos/factory-memory-knowledge/skills/skill_registry.json`
+- `repos/factory-control-plane/policies/skill_selection_policy.md`
 
 ## Como usar o projeto
 
@@ -289,9 +317,6 @@ Defina:
 ### 2) Garantir que os playbooks canonicos estejam corretos
 A pasta canonica e:
 - `playbooks/packages`
-
-Se voce alterar essa pasta, sincronize o espelho:
-- `repos/skills-reference/packages`
 
 ### 3) Iniciar uma sessao raiz do Devin
 Use o bootstrap:
@@ -335,7 +360,7 @@ Os resultados principais da run devem incluir:
 
 4. Toda etapa precisa fechar com resumo e revisao humana antes da aprovacao da proxima.
 
-5. O espelho em `repos/skills-reference` nao deve divergir da fonte canonica sem motivo.
+5. Nao recrie espelho de playbooks; cadastre os playbooks canonicos diretamente no Devin.
 
 ## Estado atual do desenho
 

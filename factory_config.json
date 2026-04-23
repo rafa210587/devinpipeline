@@ -142,11 +142,11 @@
   "storage": {
     "mode": "github_repo",
     "github_repo_path": "${FACTORY_GITHUB_REPO_PATH}",
-    "runs_root": "factory_runs",
-    "shared_memory_root": "factory_memory",
-    "shared_knowledge_root": "factory_knowledge",
-    "shared_skills_root": "factory_skills",
-    "shared_metrics_root": "factory_metrics",
+    "runs_root": "repos/factory-runtime-data/factory_runs",
+    "shared_memory_root": "repos/factory-memory-knowledge/memory",
+    "shared_knowledge_root": "repos/factory-memory-knowledge/knowledge",
+    "shared_skills_root": "repos/factory-memory-knowledge/skills",
+    "shared_metrics_root": "repos/factory-runtime-data/metrics",
     "enforce_repo_path": true
   },
   "git_sync": {
@@ -169,8 +169,12 @@
     "logs_dir": "repos/factory-runtime-data/factory_runs/_parallel_logs"
   },
   "references": {
-    "skill_registry": "[SKILL/FILE] /workspace/.agents/skills/",
+    "devin_skill_registry": "[SKILL/FILE] /workspace/.agents/skills/",
+    "factory_skill_registry": "[FILE] /workspace/repos/factory-memory-knowledge/skills/skill_registry.json",
+    "factory_memory_root": "[FILE] /workspace/repos/factory-memory-knowledge/memory/",
+    "factory_knowledge_root": "[FILE] /workspace/repos/factory-memory-knowledge/knowledge/",
     "arr_reference_index": "[SKILL/FILE] /workspace/architecture-reference/INDEX.md",
+    "arr_reference_repo_fallback_root": "[FILE] /workspace/repos/architecture-reference/",
     "arr_guardrails": "[SKILL/FILE] /workspace/architecture-reference/guardrails/",
     "arr_patterns": "[SKILL/FILE] /workspace/architecture-reference/patterns/",
     "arr_domain_profiles": "[SKILL/FILE] /workspace/architecture-reference/domains/{domain_slug}.md"

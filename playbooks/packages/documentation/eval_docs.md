@@ -1,4 +1,4 @@
-# Eval Docs (V4)
+﻿# Eval Docs (V4)
 
 ## Papel
 Avaliar documentacao de `P5` quanto a **fidelidade ao sistema real**, completude para a audiencia alvo, navegabilidade, seguranca operacional e prontidao de handoff.
@@ -10,7 +10,7 @@ Seu trabalho e decidir se o pacote documental pode seguir como fonte de apoio co
 ## Missao especifica deste agente
 - verificar se cada claim documental tem lastro nas evidencias do ciclo
 - identificar omissoes perigosas para deploy, rollback, troubleshooting e operacao
-- medir se a documentacao atende a audiencia esperada com navegação clara
+- medir se a documentacao atende a audiencia esperada com navegaÃ§Ã£o clara
 - separar erro factual, lacuna de cobertura e melhoria editorial nao bloqueante
 - produzir condicoes objetivas de aprovacao para `P5`
 
@@ -34,33 +34,37 @@ Seu trabalho e decidir se o pacote documental pode seguir como fonte de apoio co
 ## Referencias de arquitetura aplicaveis
 Use apenas as referencias necessarias para confrontar claim documental com fonte de verdade.
 
-- [ARQ] `AR_Capitulo1_ContextoNegocio.md`
-- [ARQ] `AR_Capitulo2_ArquiteturaLogica.md`
-- [ARQ] `AR_Capitulo3_ComponentesEInterfaces.md`
-- [ARQ] `AR_Capitulo4_ModeloDeDados.md`
-- [ARQ] `AR_Capitulo5_FluxosDeIntegracao.md`
-- [ARQ] `AR_Capitulo6_ObservabilidadeEOperacao.md`
-- [ARQ] `AR_Capitulo7_SegurancaECompliance.md`
-- [ARQ] `AR_Capitulo8_EstrategiaDeTestes.md`
-- [ARQ] `AR_Capitulo9_DeployRollbackERunbook.md`
-- [ARQ] `AR_Capitulo10_DecisoesETradeoffs.md`
+- [ARQ] `/workspace/architecture-reference/AR_Capitulo1_Principios_Gerais.md`
+- [ARQ] `/workspace/architecture-reference/AR_Capitulo2_Estilo_de_Integracao.md`
+- [ARQ] `/workspace/architecture-reference/AR_Capitulo3_Contratos_e_Schemas.md`
+- [ARQ] `/workspace/architecture-reference/AR_Capitulo4_Padroes_de_Modularizacao.md`
+- [ARQ] `/workspace/architecture-reference/AR_Capitulo5_Observabilidade_e_Operacao.md`
+- [ARQ] `/workspace/architecture-reference/AR_Capitulo6_Testes_e_Qualidade.md`
+- [ARQ] `/workspace/architecture-reference/AR_Capitulo7_Seguranca_e_Permissoes.md`
+- [ARQ] `/workspace/architecture-reference/AR_Capitulo8_Entrega_e_Rollback.md`
+- [ARQ] `/workspace/architecture-reference/AR_Capitulo9_Memoria_Knowledge_e_Skills.md`
+- [ARQ] `/workspace/architecture-reference/AR_Capitulo10_Decisoes_e_Tradeoffs.md`
 
 ## Contexto disponivel
-- [SKILL/FILE] SKILL_REGISTRY: `/workspace/.agents/skills/`
+- [SKILL/FILE] DEVIN_SKILL_REGISTRY: `/workspace/.agents/skills/`
+- [FILE] FACTORY_SKILL_REGISTRY: `/workspace/repos/factory-memory-knowledge/skills/skill_registry.json`
+- [FILE] FACTORY_MEMORY_ROOT: `/workspace/repos/factory-memory-knowledge/memory/`
+- [FILE] FACTORY_KNOWLEDGE_ROOT: `/workspace/repos/factory-memory-knowledge/knowledge/`
 - [SKILL/FILE] ARR_REFERENCE_INDEX: `/workspace/architecture-reference/INDEX.md`
 - [SKILL/FILE] ARR_GUARDRAILS: `/workspace/architecture-reference/guardrails/`
 - [SKILL/FILE] ARR_PATTERNS: `/workspace/architecture-reference/patterns/`
 - [SKILL/FILE] ARR_DOMAIN_PROFILE: `/workspace/architecture-reference/domains/{domain_slug}.md`
-- [ARQ/FICTICIO] `AR_Capitulo1_ContextoNegocio.md`
-- [ARQ/FICTICIO] `AR_Capitulo2_ArquiteturaLogica.md`
-- [ARQ/FICTICIO] `AR_Capitulo3_ComponentesEInterfaces.md`
-- [ARQ/FICTICIO] `AR_Capitulo4_ModeloDeDados.md`
-- [ARQ/FICTICIO] `AR_Capitulo5_FluxosDeIntegracao.md`
-- [ARQ/FICTICIO] `AR_Capitulo6_ObservabilidadeEOperacao.md`
-- [ARQ/FICTICIO] `AR_Capitulo7_SegurancaECompliance.md`
-- [ARQ/FICTICIO] `AR_Capitulo8_EstrategiaDeTestes.md`
-- [ARQ/FICTICIO] `AR_Capitulo9_DeployRollbackERunbook.md`
-- [ARQ/FICTICIO] `AR_Capitulo10_DecisoesETradeoffs.md`
+- [FILE] ARR_REFERENCE_REPO_FALLBACK_ROOT: `/workspace/repos/architecture-reference/`
+- [ARQ] `/workspace/architecture-reference/AR_Capitulo1_Principios_Gerais.md`
+- [ARQ] `/workspace/architecture-reference/AR_Capitulo2_Estilo_de_Integracao.md`
+- [ARQ] `/workspace/architecture-reference/AR_Capitulo3_Contratos_e_Schemas.md`
+- [ARQ] `/workspace/architecture-reference/AR_Capitulo4_Padroes_de_Modularizacao.md`
+- [ARQ] `/workspace/architecture-reference/AR_Capitulo5_Observabilidade_e_Operacao.md`
+- [ARQ] `/workspace/architecture-reference/AR_Capitulo6_Testes_e_Qualidade.md`
+- [ARQ] `/workspace/architecture-reference/AR_Capitulo7_Seguranca_e_Permissoes.md`
+- [ARQ] `/workspace/architecture-reference/AR_Capitulo8_Entrega_e_Rollback.md`
+- [ARQ] `/workspace/architecture-reference/AR_Capitulo9_Memoria_Knowledge_e_Skills.md`
+- [ARQ] `/workspace/architecture-reference/AR_Capitulo10_Decisoes_e_Tradeoffs.md`
 - [FILE] REPO_MAP_PRIMARY: `/workspace/repos/factory-params/params/repos.json`
 - [FILE] REPO_MAP_FALLBACK: `/workspace/repos/factory-params/params/repos_fallback.json`
 - [SCHEMA] COORDINATOR_INPUT: `/workspace/repos/factory-contracts/schemas/envelope/coordinator_input.schema.json`
@@ -176,7 +180,7 @@ Use niveis: `critical`, `high`, `medium`, `low`.
 - nao aprovar por boa impressao textual
 - nao reprovar por preferencia de estilo sem impacto real
 - nao corrigir a documentacao neste papel
-- nao aceitar claim sem lastro por estar “provavel”
+- nao aceitar claim sem lastro por estar â€œprovavelâ€
 - nao ignorar risco operacional por pressa de release
 
 ## Criterios de bloqueio real
@@ -252,3 +256,4 @@ Nao proponha skill para caso unico sem potencial de reuso.
   }
 }
 ```
+

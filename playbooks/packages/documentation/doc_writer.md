@@ -1,4 +1,4 @@
-# DOC Writer (V4)
+﻿# DOC Writer (V4)
 
 ## Papel
 Produzir **documentacao tecnica, operacional e de handoff** aderente ao estado real do sistema entregue em `P3/P4`, sem inventar fatos nem reexplicar arquitetura fora das evidencias disponiveis.
@@ -35,16 +35,16 @@ Seu trabalho e transformar artefatos aprovados de build/validation em documentac
 ## Referencias de arquitetura aplicaveis
 Use apenas as referencias relevantes ao tipo de doc solicitado.
 
-- [ARQ] `AR_Capitulo1_ContextoNegocio.md`
-- [ARQ] `AR_Capitulo2_ArquiteturaLogica.md`
-- [ARQ] `AR_Capitulo3_ComponentesEInterfaces.md`
-- [ARQ] `AR_Capitulo4_ModeloDeDados.md`
-- [ARQ] `AR_Capitulo5_FluxosDeIntegracao.md`
-- [ARQ] `AR_Capitulo6_ObservabilidadeEOperacao.md`
-- [ARQ] `AR_Capitulo7_SegurancaECompliance.md`
-- [ARQ] `AR_Capitulo8_EstrategiaDeTestes.md`
-- [ARQ] `AR_Capitulo9_DeployRollbackERunbook.md`
-- [ARQ] `AR_Capitulo10_DecisoesETradeoffs.md`
+- [ARQ] `/workspace/architecture-reference/AR_Capitulo1_Principios_Gerais.md`
+- [ARQ] `/workspace/architecture-reference/AR_Capitulo2_Estilo_de_Integracao.md`
+- [ARQ] `/workspace/architecture-reference/AR_Capitulo3_Contratos_e_Schemas.md`
+- [ARQ] `/workspace/architecture-reference/AR_Capitulo4_Padroes_de_Modularizacao.md`
+- [ARQ] `/workspace/architecture-reference/AR_Capitulo5_Observabilidade_e_Operacao.md`
+- [ARQ] `/workspace/architecture-reference/AR_Capitulo6_Testes_e_Qualidade.md`
+- [ARQ] `/workspace/architecture-reference/AR_Capitulo7_Seguranca_e_Permissoes.md`
+- [ARQ] `/workspace/architecture-reference/AR_Capitulo8_Entrega_e_Rollback.md`
+- [ARQ] `/workspace/architecture-reference/AR_Capitulo9_Memoria_Knowledge_e_Skills.md`
+- [ARQ] `/workspace/architecture-reference/AR_Capitulo10_Decisoes_e_Tradeoffs.md`
 
 ## O que pertence a este playbook vs. fora dele
 Este playbook deve conter:
@@ -60,21 +60,25 @@ Esse tipo de contexto deve vir de:
 - **Skills** para procedimentos documentais repetitivos e repo-especificos
 
 ## Contexto disponivel
-- [SKILL/FILE] SKILL_REGISTRY: `/workspace/.agents/skills/`
+- [SKILL/FILE] DEVIN_SKILL_REGISTRY: `/workspace/.agents/skills/`
+- [FILE] FACTORY_SKILL_REGISTRY: `/workspace/repos/factory-memory-knowledge/skills/skill_registry.json`
+- [FILE] FACTORY_MEMORY_ROOT: `/workspace/repos/factory-memory-knowledge/memory/`
+- [FILE] FACTORY_KNOWLEDGE_ROOT: `/workspace/repos/factory-memory-knowledge/knowledge/`
 - [SKILL/FILE] ARR_REFERENCE_INDEX: `/workspace/architecture-reference/INDEX.md`
 - [SKILL/FILE] ARR_GUARDRAILS: `/workspace/architecture-reference/guardrails/`
 - [SKILL/FILE] ARR_PATTERNS: `/workspace/architecture-reference/patterns/`
 - [SKILL/FILE] ARR_DOMAIN_PROFILE: `/workspace/architecture-reference/domains/{domain_slug}.md`
-- [ARQ/FICTICIO] `AR_Capitulo1_ContextoNegocio.md`
-- [ARQ/FICTICIO] `AR_Capitulo2_ArquiteturaLogica.md`
-- [ARQ/FICTICIO] `AR_Capitulo3_ComponentesEInterfaces.md`
-- [ARQ/FICTICIO] `AR_Capitulo4_ModeloDeDados.md`
-- [ARQ/FICTICIO] `AR_Capitulo5_FluxosDeIntegracao.md`
-- [ARQ/FICTICIO] `AR_Capitulo6_ObservabilidadeEOperacao.md`
-- [ARQ/FICTICIO] `AR_Capitulo7_SegurancaECompliance.md`
-- [ARQ/FICTICIO] `AR_Capitulo8_EstrategiaDeTestes.md`
-- [ARQ/FICTICIO] `AR_Capitulo9_DeployRollbackERunbook.md`
-- [ARQ/FICTICIO] `AR_Capitulo10_DecisoesETradeoffs.md`
+- [FILE] ARR_REFERENCE_REPO_FALLBACK_ROOT: `/workspace/repos/architecture-reference/`
+- [ARQ] `/workspace/architecture-reference/AR_Capitulo1_Principios_Gerais.md`
+- [ARQ] `/workspace/architecture-reference/AR_Capitulo2_Estilo_de_Integracao.md`
+- [ARQ] `/workspace/architecture-reference/AR_Capitulo3_Contratos_e_Schemas.md`
+- [ARQ] `/workspace/architecture-reference/AR_Capitulo4_Padroes_de_Modularizacao.md`
+- [ARQ] `/workspace/architecture-reference/AR_Capitulo5_Observabilidade_e_Operacao.md`
+- [ARQ] `/workspace/architecture-reference/AR_Capitulo6_Testes_e_Qualidade.md`
+- [ARQ] `/workspace/architecture-reference/AR_Capitulo7_Seguranca_e_Permissoes.md`
+- [ARQ] `/workspace/architecture-reference/AR_Capitulo8_Entrega_e_Rollback.md`
+- [ARQ] `/workspace/architecture-reference/AR_Capitulo9_Memoria_Knowledge_e_Skills.md`
+- [ARQ] `/workspace/architecture-reference/AR_Capitulo10_Decisoes_e_Tradeoffs.md`
 - [FILE] REPO_MAP_PRIMARY: `/workspace/repos/factory-params/params/repos.json`
 - [FILE] REPO_MAP_FALLBACK: `/workspace/repos/factory-params/params/repos_fallback.json`
 - [SCHEMA] COORDINATOR_INPUT: `/workspace/repos/factory-contracts/schemas/envelope/coordinator_input.schema.json`
@@ -202,7 +206,7 @@ Se `RUN_STATE.attempt > 1`:
 - nao inventar comportamento, comando, endpoint, dashboard, alerta, env var ou caminho nao comprovado
 - nao documentar item como validado se ele so aparece em design/arquitetura e nao em build/validation
 - nao mascarar lacuna de evidencia com texto vago
-- nao usar placeholder, TODO, “a completar”, “etc.” ou pseudoconteudo
+- nao usar placeholder, TODO, â€œa completarâ€, â€œetc.â€ ou pseudoconteudo
 - nao redefinir arquitetura global ou contrato funcional neste papel
 - nao alterar arquivos fora do escopo documental designado
 
@@ -281,3 +285,4 @@ Nao proponha skill para caso unico sem potencial de reuso.
   }
 }
 ```
+

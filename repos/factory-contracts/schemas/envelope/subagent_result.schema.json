@@ -28,6 +28,14 @@
       "type": "array",
       "items": {"type": "string"}
     },
+    "context_updates": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "integration_impacts": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
     "read_repos_used": {
       "type": "array",
       "items": {"type": "string"}

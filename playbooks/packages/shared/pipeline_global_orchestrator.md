@@ -1,4 +1,4 @@
-# Pipeline Global Orchestrator (V4)
+﻿# Pipeline Global Orchestrator (V4)
 
 ## Papel
 Orquestrar o pipeline ponta a ponta como **coordenador raiz canonico** da factory.
@@ -75,11 +75,15 @@ Voce recebe, no minimo:
 - limits de concurrency e regras de tracking
 
 ## Contexto disponivel
-- [SKILL/FILE] SKILL_REGISTRY: `/workspace/.agents/skills/`
+- [SKILL/FILE] DEVIN_SKILL_REGISTRY: `/workspace/.agents/skills/`
+- [FILE] FACTORY_SKILL_REGISTRY: `/workspace/repos/factory-memory-knowledge/skills/skill_registry.json`
+- [FILE] FACTORY_MEMORY_ROOT: `/workspace/repos/factory-memory-knowledge/memory/`
+- [FILE] FACTORY_KNOWLEDGE_ROOT: `/workspace/repos/factory-memory-knowledge/knowledge/`
 - [SKILL/FILE] ARR_REFERENCE_INDEX: `/workspace/architecture-reference/INDEX.md`
 - [SKILL/FILE] ARR_GUARDRAILS: `/workspace/architecture-reference/guardrails/`
 - [SKILL/FILE] ARR_PATTERNS: `/workspace/architecture-reference/patterns/`
 - [SKILL/FILE] ARR_DOMAIN_PROFILE: `/workspace/architecture-reference/domains/{domain_slug}.md`
+- [FILE] ARR_REFERENCE_REPO_FALLBACK_ROOT: `/workspace/repos/architecture-reference/`
 - [FILE] REPO_MAP_PRIMARY: `/workspace/repos/factory-params/params/repos.json`
 - [FILE] REPO_MAP_FALLBACK: `/workspace/repos/factory-params/params/repos_fallback.json`
 - [SCHEMA] COORDINATOR_INPUT: `/workspace/repos/factory-contracts/schemas/envelope/coordinator_input.schema.json`
@@ -91,6 +95,11 @@ Voce recebe, no minimo:
 ### Coordinator -> stage orchestrator
 Todo stage orchestrator deve receber `CoordinatorInput` valido contendo:
 - `repos` e `repo_fallbacks` resolvidos
+- `skill_registry_file` apontando para `repos/factory-memory-knowledge/skills/skill_registry.json`
+- `devin_skill_registry_root` apontando para `/workspace/.agents/skills/`
+- `memory_root` apontando para `repos/factory-memory-knowledge/memory`
+- `knowledge_root` apontando para `repos/factory-memory-knowledge/knowledge`
+- `architecture_reference_root` e `architecture_reference_fallback_root` quando houver AR externa/repo fallback
 - `communication_contracts` com os schemas canonicos
 - `persistence_targets` para `runtime_data`, `memory_knowledge` e `target_repos`
 - `stage_review_policy` e `debate_policy`
@@ -99,6 +108,8 @@ Todo stage orchestrator deve receber `CoordinatorInput` valido contendo:
 ### Stage orchestrator -> specialists
 Toda child session especialista deve receber `SubagentTask` valido contendo:
 - `task_id`, `role`, `objective`, `dependencies`, `priority`
+- `skill_registry_ref` e `selected_skill_refs` quando houver skills aplicaveis
+- `memory_refs`, `knowledge_refs` e `architecture_reference_refs` quando houver contexto aplicavel
 - `input_artifact_refs` em vez de contexto informal quando possivel
 - `output_schema_ref` esperado
 - `must_read_repos` e `must_write_repos`
@@ -155,6 +166,7 @@ Toda child session deve receber, no minimo:
 - `NON_GOALS`
 - `RUN_STATE`
 - `PROJECT_MEMORY` aplicavel
+- referencias explicitas de `FACTORY_MEMORY_ROOT`, `FACTORY_KNOWLEDGE_ROOT`, `FACTORY_SKILL_REGISTRY` e AR/fallback quando relevantes
 - `QUORUM_DECISIONS_APPLICABLE`
 - referencias de persistencia para outputs, tracking e review packet
 
@@ -210,6 +222,7 @@ Para cada stage:
 
 ### 4) Aplicar regras de transicao
 - `P0 -> P1 -> P2 -> P3 -> P4`
+- aceitar `P3.done` somente quando o output declarar que todas as tasks projetadas foram executadas e aceitas (`tasks_projected == tasks_executed_and_accepted`) e nao houver `pending_tasks_final`
 - apos `P4`, seguir para `P5` somente se `release_decision == approved`
 - se `release_decision != approved`, marcar `P5 = skipped_release_not_approved`, produzir resumo de skip e seguir para `P6`
 - apos `P5` terminal (`done` ou `skipped_release_not_approved`), seguir para `P6`

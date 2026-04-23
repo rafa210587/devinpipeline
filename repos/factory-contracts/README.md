@@ -7,6 +7,9 @@ Versioned schemas for communication and runtime persistence.
 - Subagent task/result contracts.
 - Quorum and escalation contracts.
 - Runtime state, handoff, and tracking event schemas.
+- Factory skill registry schema.
 
 ## Rule
 No coordinator may start the next stage before validating the previous stage output against contracts.
+
+

@@ -1,0 +1,88 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "FactorySkillRegistry",
+  "type": "object",
+  "required": [
+    "registry_version",
+    "source_of_truth",
+    "devin_skill_registry_root",
+    "factory_skill_registry_file",
+    "skills"
+  ],
+  "properties": {
+    "registry_version": {"type": "string"},
+    "source_of_truth": {
+      "type": "string",
+      "enum": ["devin_plus_factory_registry"]
+    },
+    "devin_skill_registry_root": {"type": "string"},
+    "factory_skill_registry_file": {"type": "string"},
+    "factory_promoted_skills_root": {"type": "string"},
+    "updated_at_utc": {"type": ["string", "null"]},
+    "selection_policy_ref": {"type": "string"},
+    "skills": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "status",
+          "source",
+          "scope",
+          "description",
+          "trigger_conditions",
+          "skill_ref"
+        ],
+        "properties": {
+          "id": {"type": "string"},
+          "name": {"type": "string"},
+          "status": {
+            "type": "string",
+            "enum": ["active", "draft", "deprecated", "disabled"]
+          },
+          "source": {
+            "type": "string",
+            "enum": ["devin", "factory_promoted", "repo_local", "external"]
+          },
+          "scope": {
+            "type": "string",
+            "enum": ["global", "domain", "project", "repo"]
+          },
+          "description": {"type": "string"},
+          "trigger_conditions": {
+            "type": "array",
+            "items": {"type": "string"}
+          },
+          "allowed_stages": {
+            "type": "array",
+            "items": {"type": "string"}
+          },
+          "allowed_roles": {
+            "type": "array",
+            "items": {"type": "string"}
+          },
+          "skill_ref": {"type": "string"},
+          "file_ref": {"type": ["string", "null"]},
+          "tags": {
+            "type": "array",
+            "items": {"type": "string"}
+          },
+          "dependencies": {
+            "type": "array",
+            "items": {"type": "string"}
+          },
+          "promotion_event_ref": {"type": ["string", "null"]},
+          "last_validated_utc": {"type": ["string", "null"]},
+          "notes": {"type": ["string", "null"]}
+        },
+        "additionalProperties": false
+      }
+    },
+    "selection_rules": {
+      "type": "array",
+      "items": {"type": "string"}
+    }
+  },
+  "additionalProperties": false
+}

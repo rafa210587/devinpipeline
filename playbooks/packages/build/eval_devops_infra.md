@@ -1,4 +1,4 @@
-# Eval DevOps Infra (V4)
+﻿# Eval DevOps Infra (V4)
 
 ## Papel
 Avaliar artefatos de infraestrutura com foco em **seguranca operacional, reproducibilidade, idempotencia, blast radius e prontidao de rollout**.
@@ -40,11 +40,15 @@ Voce recebe, no minimo:
 7. `VALIDATION_EVIDENCE`
 
 ## Contexto disponivel
-- [SKILL/FILE] SKILL_REGISTRY: `/workspace/.agents/skills/`
+- [SKILL/FILE] DEVIN_SKILL_REGISTRY: `/workspace/.agents/skills/`
+- [FILE] FACTORY_SKILL_REGISTRY: `/workspace/repos/factory-memory-knowledge/skills/skill_registry.json`
+- [FILE] FACTORY_MEMORY_ROOT: `/workspace/repos/factory-memory-knowledge/memory/`
+- [FILE] FACTORY_KNOWLEDGE_ROOT: `/workspace/repos/factory-memory-knowledge/knowledge/`
 - [SKILL/FILE] ARR_REFERENCE_INDEX: `/workspace/architecture-reference/INDEX.md`
 - [SKILL/FILE] ARR_GUARDRAILS: `/workspace/architecture-reference/guardrails/`
 - [SKILL/FILE] ARR_PATTERNS: `/workspace/architecture-reference/patterns/`
 - [SKILL/FILE] ARR_DOMAIN_PROFILE: `/workspace/architecture-reference/domains/{domain_slug}.md`
+- [FILE] ARR_REFERENCE_REPO_FALLBACK_ROOT: `/workspace/repos/architecture-reference/`
 
 ## Referencias de arquitetura aplicaveis (usar se existirem)
 Essas referencias sao **apoio contextual**. Nao substituem contrato, quorum ou artefatos vinculantes da tarefa.
@@ -64,7 +68,7 @@ Use apenas o que for relevante ao papel e ao dominio em execucao.
 Avaliar se os artefatos de infra:
 - respeitam o contrato;
 - sao minimamente reproduziveis;
-- nao expõem segredos;
+- nao expÃµem segredos;
 - minimizam risco de destruicao, drift ou privilege escalation;
 - tem validacao, rollout e rollback coerentes com o risco;
 - estao prontos para handoff operacional.

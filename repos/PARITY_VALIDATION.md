@@ -36,7 +36,7 @@ Validation method: check each capability is represented by prompt/policy/schema/
 
 - [x] Stage DAG P0->P6 -> `repos/factory-control-plane/workflows/pipeline_dag.json`
 - [x] P0 route mode handling policy -> `repos/factory-control-plane/policies/orchestration_policy.md`
-- [x] Pre-briefed synthetic P1 behavior -> `repos/factory-control-plane/policies/orchestration_policy.md`
+- [x] Pre-briefed reduced P1 validation/consolidation behavior -> `repos/factory-control-plane/policies/orchestration_policy.md`
 - [x] P5 skip when release blocked -> `repos/factory-control-plane/workflows/pipeline_dag.json`
 - [x] P6 mandatory final learning stage -> `repos/factory-control-plane/workflows/pipeline_dag.json`
 - [x] Stage handoff required before next stage -> `repos/factory-control-plane/policies/orchestration_policy.md`
@@ -84,7 +84,10 @@ Validation method: check each capability is represented by prompt/policy/schema/
 - [x] Semantic memory file -> `repos/factory-memory-knowledge/memory/semantic_memory_candidates.jsonl`
 - [x] Memory summary log -> `repos/factory-memory-knowledge/memory/MEMORY_LOG.md`
 - [x] Knowledge candidate file -> `repos/factory-memory-knowledge/knowledge/knowledge_candidates.jsonl`
+- [x] Factory skill registry file -> `repos/factory-memory-knowledge/skills/skill_registry.json`
 - [x] Skill events file -> `repos/factory-memory-knowledge/skills/skill_events.jsonl`
+- [x] Skill registry contract -> `repos/factory-contracts/schemas/state/skill_registry.schema.json`
+- [x] Skill selection policy -> `repos/factory-control-plane/policies/skill_selection_policy.md`
 - [x] Promotion decisions file -> `repos/factory-memory-knowledge/promotions/promotion_decisions.jsonl`
 - [x] Promotion policy (memory/knowledge/skill) -> `repos/factory-control-plane/policies/promotion_policy.md`
 - [x] Promotion event contract -> `repos/factory-contracts/schemas/state/promotion_event.schema.json`
@@ -103,8 +106,8 @@ Validation method: check each capability is represented by prompt/policy/schema/
 
 ## H. Migration Traceability
 
-- [x] Legacy playbooks copied for continuity -> `repos/skills-reference/packages/`
-- [x] Legacy JSON schemas copied for migration reference -> `repos/factory-contracts/schemas/deprecated_python_contracts/`
+- [x] Legacy playbook mirror removed; canonical playbooks live only in `playbooks/packages/`
+- [x] Legacy JSON schema duplication removed; canonical contracts now live only under `repos/factory-contracts/schemas/{envelope,pipeline,state}/`
 
 ## I. Documentation
 

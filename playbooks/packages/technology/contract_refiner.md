@@ -1,4 +1,4 @@
-# Contract Refiner (V4)
+﻿# Contract Refiner (V4)
 
 ## Papel
 Refinar contratos tecnicos de `P2` para implementabilidade, clareza de interfaces, referencia de schemas e baixo acoplamento.
@@ -27,11 +27,15 @@ Seu trabalho e transformar a solucao escolhida em contratos pequenos, claros e r
 - pontos de conflito ou lacuna para debate
 
 ## Contexto disponivel
-- [SKILL/FILE] SKILL_REGISTRY: `/workspace/.agents/skills/`
+- [SKILL/FILE] DEVIN_SKILL_REGISTRY: `/workspace/.agents/skills/`
+- [FILE] FACTORY_SKILL_REGISTRY: `/workspace/repos/factory-memory-knowledge/skills/skill_registry.json`
+- [FILE] FACTORY_MEMORY_ROOT: `/workspace/repos/factory-memory-knowledge/memory/`
+- [FILE] FACTORY_KNOWLEDGE_ROOT: `/workspace/repos/factory-memory-knowledge/knowledge/`
 - [SKILL/FILE] ARR_REFERENCE_INDEX: `/workspace/architecture-reference/INDEX.md`
 - [SKILL/FILE] ARR_GUARDRAILS: `/workspace/architecture-reference/guardrails/`
 - [SKILL/FILE] ARR_PATTERNS: `/workspace/architecture-reference/patterns/`
 - [SKILL/FILE] ARR_DOMAIN_PROFILE: `/workspace/architecture-reference/domains/{domain_slug}.md`
+- [FILE] ARR_REFERENCE_REPO_FALLBACK_ROOT: `/workspace/repos/architecture-reference/`
 - [FILE] REPO_MAP_PRIMARY: `/workspace/repos/factory-params/params/repos.json`
 - [FILE] REPO_MAP_FALLBACK: `/workspace/repos/factory-params/params/repos_fallback.json`
 - [SCHEMA] COORDINATOR_INPUT: `/workspace/repos/factory-contracts/schemas/envelope/coordinator_input.schema.json`

@@ -1,4 +1,4 @@
-# Spec Writer (V1)
+﻿# Spec Writer (V5)
 
 ## Papel
 Gerar a **spec inicial de intake** a partir do prompt cru, do prompt normalizado e das referencias aderentes disponiveis.
@@ -46,16 +46,19 @@ Voce recebe, no minimo:
 Se duas fontes de maior prioridade entrarem em conflito real e voce nao conseguir reconciliar sem inventar, retorne `status=blocked`.
 
 ## Contexto disponivel
-- [SKILL/FILE] SKILL_REGISTRY: `/workspace/.agents/skills/`
+- [SKILL/FILE] DEVIN_SKILL_REGISTRY: `/workspace/.agents/skills/`
+- [FILE] FACTORY_SKILL_REGISTRY: `/workspace/repos/factory-memory-knowledge/skills/skill_registry.json`
+- [FILE] FACTORY_MEMORY_ROOT: `/workspace/repos/factory-memory-knowledge/memory/`
+- [FILE] FACTORY_KNOWLEDGE_ROOT: `/workspace/repos/factory-memory-knowledge/knowledge/`
 - [SKILL/FILE] ARR_REFERENCE_INDEX: `/workspace/architecture-reference/INDEX.md`
 - [SKILL/FILE] ARR_GUARDRAILS: `/workspace/architecture-reference/guardrails/`
 - [SKILL/FILE] ARR_PATTERNS: `/workspace/architecture-reference/patterns/`
 - [SKILL/FILE] ARR_DOMAIN_PROFILE: `/workspace/architecture-reference/domains/{domain_slug}.md`
+- [FILE] ARR_REFERENCE_REPO_FALLBACK_ROOT: `/workspace/repos/architecture-reference/`
 - [FILE] REPO_MAP_PRIMARY: `/workspace/repos/factory-params/params/repos.json`
 - [FILE] REPO_MAP_FALLBACK: `/workspace/repos/factory-params/params/repos_fallback.json`
 - [FILE] REFINEMENT_SUPPORT_ROOT: `/workspace/repos/refinement-support/`
 - [FILE] REFINEMENT_INTAKE_TEMPLATE: `/workspace/repos/refinement-support/prompt_starters/intake_seed_template.md`
-- [FILE] SKILLS_REFERENCE_ROOT: `/workspace/repos/skills-reference/`
 - [SCHEMA] COORDINATOR_INPUT: `/workspace/repos/factory-contracts/schemas/envelope/coordinator_input.schema.json`
 - [SCHEMA] SUBAGENT_TASK: `/workspace/repos/factory-contracts/schemas/envelope/subagent_task.schema.json`
 - [SCHEMA] SUBAGENT_RESULT: `/workspace/repos/factory-contracts/schemas/envelope/subagent_result.schema.json`
@@ -84,7 +87,7 @@ Antes de gerar a spec, identifique silenciosamente:
 - quais sao os workflows nucleares;
 - quais constraints e non-goals sao vinculantes;
 - quais referencias de AR sao realmente aderentes;
-- se existe skill de geracao de spec aplicavel no `SKILL_REGISTRY` ou `skills_reference`;
+- se existe skill de geracao de spec aplicavel no `DEVIN_SKILL_REGISTRY` e ativa/permitida em `FACTORY_SKILL_REGISTRY`;
 - quais secoes do feedback humano sao vinculantes nesta rodada.
 
 ### 2) Resolver a estrategia de referencia
@@ -235,3 +238,4 @@ Nao proponha skill para algo muito especifico de um unico pedido.
   }
 }
 ```
+

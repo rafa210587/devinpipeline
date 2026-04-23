@@ -35,7 +35,8 @@ Principais capacidades:
    Ambiguidades materiais devem ser discutidas entre agents antes de pedir intervencao humana.
 
 5. **DAG de build com paralelismo seguro**
-   `P3` controla dependencias reais, `ready_queue` e `max_concurrency`.
+   `P3` controla dependencias reais, `ready_queue`, `max_concurrency` e um `context ledger` entre tasks.
+   O objetivo nao e fazer poucas tasks; e quebrar o escopo aprovado em quantas tasks pequenas forem necessarias.
 
 6. **Resume**
    A run pode retomar de uma etapa intermediaria usando estado e artefatos persistidos.
@@ -105,11 +106,12 @@ Responsabilidade:
 - transformar o pedido bruto em intake estruturado
 - normalizar o prompt
 - gerar uma spec inicial forte a partir do intake
-- avaliar a spec antes de mostrar ao humano
-- trazer a spec para aprovacao humana em `P0`
-- incorporar melhorias pedidas pelo humano
+- avaliar a spec antes de levar ao review humano
+- preparar `stage_review_packet` com `draft_intake_spec` e `promotable_spec_ref`
+- deixar o root orchestrator colher aprovacao humana e promover para `approved_intake_spec`
+- incorporar melhorias pedidas pelo humano quando o root reabrir `P0` com `changes_requested`
 - decidir `route_mode`
-- preparar handoff confiavel para a etapa seguinte com `approved_intake_spec`
+- preparar handoff confiavel para a etapa seguinte apos aprovacao da spec
 
 Agents centrais:
 
@@ -123,9 +125,10 @@ Agents centrais:
 
 Responsabilidade:
 
-- transformar o pedido em briefing executavel
+- transformar a `approved_intake_spec` em briefing executavel
 - consolidar requisitos, non-goals, riscos e criterios de aceite
 - fechar divergencias de produto por debate e moderacao
+- quando `route_mode == pre_briefed`, rodar em modo enxuto para validar, consolidar e fechar lacunas pequenas, sem reabrir discussoes ja aprovadas em `P0`
 
 Agents centrais:
 
@@ -177,8 +180,11 @@ Responsabilidade:
 - enumerar task ledger
 - controlar DAG e `ready_queue`
 - despachar child sessions pequenas
+- preservar contexto entre tasks por `context_packet`, `context_updates` e `integration_impacts`
+- atuar em repos existentes, lendo convencoes, arquivos vizinhos, `AGENTS.md` e skills antes de alterar
 - aplicar debate interno quando houver conflito tecnico
 - consolidar artefatos para validacao
+- encerrar apenas quando todas as tasks projetadas em `P2` tiverem sido executadas e aceitas
 
 Agents centrais:
 
@@ -198,6 +204,15 @@ Ownership de testes em `P3`:
 - `builder_qa`: **testes unitarios** do slice
 - `test_builder`: testes complementares de integracao/contrato/smoke quando o risco exigir
 - `eval_test_builder`: auditoria da camada de testes
+
+Regra de granularidade:
+
+- `P1` e `P2` podem tratar pedidos grandes e complexos.
+- `P2` deve decompor esse trabalho em um catalogo completo de slices pequenas.
+- `P3` nao reduz escopo para fazer poucas tasks.
+- `P3` executa todas as tasks projetadas, respeitando dependencias e paralelizando apenas tasks independentes.
+- Se qualquer task projetada ficar pendente, `P3` nao pode retornar `done`.
+- Se uma task descobrir impacto em outra, esse impacto deve ser salvo no `context ledger` e usado para recalcular dependencias.
 
 ### P4 - Validation
 
@@ -315,11 +330,26 @@ Hoje ele espera:
 - `repos/factory-contracts`
 - `repos/factory-params`
 - `repos/architecture-reference`
-- `repos/skills-reference`
 - `repos/refinement-support`
 - `repos/factory-memory-knowledge`
 - `repos/factory-runtime-data`
 - `repos/project-target-repos`
+
+Todos os playbooks em `playbooks/packages` recebem ponteiros explicitos para:
+
+- `DEVIN_SKILL_REGISTRY`: `/workspace/.agents/skills/`
+- `FACTORY_SKILL_REGISTRY`: `/workspace/repos/factory-memory-knowledge/skills/skill_registry.json`
+- `FACTORY_MEMORY_ROOT`: `/workspace/repos/factory-memory-knowledge/memory/`
+- `FACTORY_KNOWLEDGE_ROOT`: `/workspace/repos/factory-memory-knowledge/knowledge/`
+- `ARR_REFERENCE_INDEX`: `/workspace/architecture-reference/INDEX.md`
+- `ARR_REFERENCE_REPO_FALLBACK_ROOT`: `/workspace/repos/architecture-reference/`
+
+Regra pratica: o agent tenta usar a referencia primaria quando ela existir e, se ela nao estiver disponivel, usa o repo interno/fallback mapeado em `repos/factory-params/params/repos.json`.
+
+Nos schemas, isso aparece assim:
+
+- `CoordinatorInput` pode carregar `skill_registry_file`, `devin_skill_registry_root`, `memory_root`, `knowledge_root`, `architecture_reference_root` e `architecture_reference_fallback_root`.
+- `SubagentTask` pode carregar `skill_registry_ref`, `selected_skill_refs`, `memory_refs`, `knowledge_refs` e `architecture_reference_refs`.
 
 ### 3) Iniciar uma nova run
 
@@ -355,6 +385,272 @@ Os resultados principais da run devem incluir:
 - blockers e decisoes
 - `release_decision`
 - outputs de learning e promocoes de `P6`
+
+## Como configurar no Devin para deixar pronto para uso
+
+Esta secao descreve o setup operacional no Devin para rodar a factory agent-first.
+Ela segue o desenho deste projeto e as capacidades atuais documentadas pelo Devin para managed sessions, Knowledge, Skills, Playbooks, AGENTS.md, indexacao e repo setup.
+
+Referencias oficiais uteis:
+
+- [Capacidades avancadas do Devin](https://docs.devin.ai/pt-BR/work-with-devin/advanced-capabilities)
+- [Modo Avancado](https://docs.devin.ai/pt-BR/product-guides/advanced-mode)
+- [Configuracao de repositorio](https://docs.devin.ai/pt-BR/onboard-devin/new-repo-setup)
+- [Indexar um repositorio](https://docs.devin.ai/pt-BR/onboard-devin/index-repo)
+- [AGENTS.md](https://docs.devin.ai/pt-BR/onboard-devin/agents-md)
+- [Skills](https://docs.devin.ai/pt-BR/product-guides/skills)
+- [Criando Playbooks](https://docs.devin.ai/pt-BR/product-guides/creating-playbooks)
+- [Knowledge](https://docs.devin.ai/pt-BR/product-guides/knowledge)
+
+### 1) Habilitar capacidades necessarias
+
+No Devin, confirme:
+
+- plano Team ou Enterprise quando for usar Modo Avancado;
+- permissao `UseDevinExpert` para quem vai iniciar/operar a factory;
+- acesso a managed sessions para orquestracao paralela;
+- acesso a Knowledge, Skills e Playbooks;
+- acesso ao Devin MCP se voce quiser gerenciar sessoes/playbooks/knowledge programaticamente.
+
+Sem managed sessions, a factory ainda serve como prompt/processo, mas perde a capacidade central de child sessions paralelas.
+
+### 2) Conectar e configurar repositorios
+
+No Devin:
+
+1. conecte o provedor Git em `Settings > Integrations`;
+2. adicione o repo desta factory;
+3. adicione todos os repos alvo que a factory podera alterar;
+4. clone os repos que o Devin deve editar ativamente;
+5. configure comandos de manutencao, lint e teste por repo;
+6. rode verificacao dos comandos quando possivel.
+
+Repos que devem estar acessiveis:
+
+- repo da factory contendo `factory_config.json`, `playbooks/` e `repos/`;
+- repos alvo que serao mapeados em `repos/project-target-repos`;
+- repo dedicado de skills, se voce optar por manter skills versionadas fora do repo alvo;
+- repos de referencia arquitetural ou documentacao interna, se ficarem fora desta pasta.
+
+### 3) Indexar repositorios
+
+Indexe no Devin:
+
+- o repo da factory;
+- os repos alvo;
+- repos de referencia importantes;
+- repos dedicados de skills, se existirem.
+
+A indexacao ajuda o Devin a recuperar contexto por Ask Devin/DeepWiki e melhora a descoberta de informacoes entre sessoes.
+Repo Setup e indexacao sao coisas diferentes: Repo Setup prepara ambiente de desenvolvimento; indexacao melhora busca e compreensao de codigo.
+
+### 4) Criar ou anexar o playbook raiz
+
+Opcao recomendada:
+
+- criar um Playbook no Devin chamado `Factory Root Orchestrator`;
+- colar ou anexar o conteudo de `repos/factory-control-plane/prompts/master_pipeline_prompt.md`;
+- manter o playbook como bootstrap fino;
+- garantir que ele mande carregar `playbooks/packages/shared/pipeline_global_orchestrator.md` como contrato canonico.
+
+Alternativa:
+
+- anexar o arquivo de bootstrap na sessao inicial;
+- ou colar manualmente o prompt inicial apontando para o bootstrap.
+
+Nao crie playbooks separados concorrendo com os agents canonicos.
+Os playbooks de comportamento dos agents devem continuar versionados em `playbooks/packages`.
+
+### 5) Criar Knowledge minimo da factory
+
+Crie itens de Knowledge no Devin para orientar recuperacao de contexto.
+Sugestao de Knowledge inicial:
+
+- titulo: `Devin Factory Agent-First - Fonte Canonica`
+- trigger: `Quando a tarefa mencionar factory, pipeline P0-P6, orchestrator, agents, build DAG ou child sessions`
+- conteudo:
+  - a fonte canonica dos agents e `playbooks/packages`;
+  - o bootstrap fica em `repos/factory-control-plane/prompts/master_pipeline_prompt.md`;
+  - o root orchestrator fica em `playbooks/packages/shared/pipeline_global_orchestrator.md`;
+  - schemas canonicos ficam em `repos/factory-contracts/schemas/envelope`, `pipeline` e `state`;
+  - registry canonico de skills fica em `repos/factory-memory-knowledge/skills/skill_registry.json`;
+  - nao existe mais `schemas/` na raiz: contratos novos devem nascer apenas em `repos/factory-contracts/schemas/...`.
+
+Use Knowledge para contexto factual e regras recorrentes.
+Use Skills para procedimentos executaveis de repos.
+Use Playbooks para prompts reutilizaveis de sessao.
+
+### 6) Criar Skills de repos alvo
+
+Em cada repo alvo, crie skills quando houver procedimento repetivel de setup, teste, deploy ou verificacao.
+Local recomendado:
+
+```text
+.agents/skills/<skill-name>/SKILL.md
+```
+
+Exemplos uteis:
+
+- `.agents/skills/test-before-pr/SKILL.md`
+- `.agents/skills/run-backend-locally/SKILL.md`
+- `.agents/skills/verify-contracts/SKILL.md`
+- `.agents/skills/deploy-staging-checklist/SKILL.md`
+
+Cada skill deve ter:
+
+- frontmatter com `name` e `description`;
+- passos claros de setup/verificacao;
+- comandos de teste/lint/build;
+- criterios de sucesso;
+- anti-usos ou limites quando houver risco.
+
+Para este projeto, skills de repos alvo sao mais importantes do que copiar todos os playbooks para dentro do Devin UI.
+
+### 6.1) Registrar Skills no registry da factory
+
+Toda skill que um coordinator ou subagent puder escolher deve estar indexada em:
+
+- `repos/factory-memory-knowledge/skills/skill_registry.json`
+
+Esse arquivo nao substitui a skill instalada no Devin.
+Ele informa:
+
+- qual skill existe;
+- onde a skill real esta (`/workspace/.agents/skills/...` ou skill promovida pela factory);
+- quando usar;
+- quais etapas/papeis podem usar;
+- se a skill esta `active`, `draft`, `deprecated` ou `disabled`.
+
+O root/stage coordinator deve passar para child sessions:
+
+- `skill_registry_ref`: `repos/factory-memory-knowledge/skills/skill_registry.json`;
+- `selected_skill_refs`: lista das skills escolhidas para aquela task.
+
+Os builders precisam dessas skills para atuar em repos existentes com menos descoberta repetida.
+
+### 7) Criar `AGENTS.md` nos repos alvo
+
+Em cada repo alvo, coloque um `AGENTS.md` na raiz com:
+
+- comandos de setup;
+- comandos de lint/test/build;
+- convencoes de codigo;
+- estrutura do repo;
+- estrategia de branch/PR;
+- regras de seguranca;
+- caminhos de docs internas relevantes.
+
+Os builders devem ler `AGENTS.md` antes de alterar codigo.
+Isso evita que cada child session redescubra convencoes basicas.
+
+### 8) Configurar secrets e acessos
+
+No Devin, configure secrets de forma nativa, nunca no repo:
+
+- tokens de Git/provider;
+- tokens de package registry;
+- credenciais cloud;
+- chaves de API de staging;
+- variaveis sensiveis de teste.
+
+Na factory, referencie secrets por nome logico, nao por valor.
+Exemplo:
+
+```json
+{
+  "secret_refs": ["STAGING_API_TOKEN", "NPM_TOKEN"]
+}
+```
+
+### 9) Configurar os repos no `repos.json`
+
+Atualize:
+
+- `repos/factory-params/params/repos.json`
+- `repos/factory-params/params/repos_fallback.json`
+
+Garanta que cada alias exista:
+
+- `control_plane`
+- `contracts`
+- `params`
+- `architecture_reference`
+- `refinement_support`
+- `memory_knowledge`
+- `runtime_data`
+- `target_repos`
+
+Em Devin, os caminhos podem ser diferentes do Windows local.
+Nos playbooks, use `/workspace/...`.
+Na documentacao local, use paths relativos ao repo.
+
+### 10) Instrumentar runtime data
+
+Garanta que existam ou possam ser criadas estas areas:
+
+```text
+repos/factory-runtime-data/
+|- artifacts/
+|- context/
+|- metrics/
+|- state/
+|- tracking/
+```
+
+`P3` deve usar especialmente:
+
+- `repos/factory-runtime-data/context/p3_context_ledger.json`
+- `repos/factory-runtime-data/tracking/execution_tracking.md`
+- `repos/factory-runtime-data/tracking/tracking_events.jsonl`
+- `repos/factory-runtime-data/state/runtime_state.json`
+
+O `context ledger` e o ponto que preserva contexto entre builders sem mandar prompts gigantes.
+
+### 11) Configurar schemas no Devin
+
+Nao e necessario cadastrar schema por schema no Devin UI se a sessao conseguir ler o repo.
+O importante e:
+
+- o repo da factory estar clonado/indexado;
+- os playbooks referenciarem os schemas por path;
+- o bootstrap instruir o root a validar envelopes contra `repos/factory-contracts/schemas`.
+
+Schemas canonicos para comunicacao:
+
+- `repos/factory-contracts/schemas/envelope/coordinator_input.schema.json`
+- `repos/factory-contracts/schemas/envelope/subagent_task.schema.json`
+- `repos/factory-contracts/schemas/envelope/subagent_result.schema.json`
+- `repos/factory-contracts/schemas/envelope/coordinator_output.schema.json`
+
+Schemas canonicos para estado:
+
+- `repos/factory-contracts/schemas/state/runtime_state.schema.json`
+- `repos/factory-contracts/schemas/state/handoff.schema.json`
+- `repos/factory-contracts/schemas/state/tracking_event.schema.json`
+- `repos/factory-contracts/schemas/state/promotion_event.schema.json`
+
+Schemas canonicos para contrato de etapa:
+
+- `repos/factory-contracts/schemas/pipeline/stage_contracts.schema.json`
+
+### 12) Rodar smoke test operacional
+
+Antes de usar em trabalho real, rode uma sessao pequena:
+
+```text
+Use a Devin Factory neste repo.
+Objetivo: executar somente P0 e P1 para uma feature ficticia pequena.
+Nao altere repo alvo.
+Valide se o root carrega os playbooks, gera spec em P0, pede aprovacao humana e prepara P1.
+```
+
+Depois rode um smoke de `P2/P3` com repo alvo pequeno:
+
+```text
+Use a Devin Factory para criar uma alteracao pequena em um repo alvo de teste.
+Exija P2 com build plan pequeno, P3 com uma task de builder, uma de builder_qa e uma de code_reviewer.
+Nao avance para P4 enquanto todas as tasks projetadas nao terminarem.
+```
 
 ## Boas praticas para o prompt inicial
 
@@ -453,25 +749,18 @@ Analisa ai o sistema e melhora tudo.
 - `.env.example`
   Variaveis de ambiente esperadas.
 
-- `requirements.txt`
-  Dependencias do runtime legado ou auxiliares locais.
-
-- `examples/`
-  Exemplos de inputs e manifests.
-
 - `playbooks/`
   Fonte canonica dos agents e orchestrators.
 
 - `repos/`
   Repos internos usados pela factory.
 
-- `schemas/`
-  Schemas legados/de referencia do desenho anterior.
-  A fonte canonica atual de envelopes e contratos internos esta em `repos/factory-contracts`.
+Itens removidos da raiz por nao fazerem parte do runtime agent-first:
 
-- `factory_runs/`
-  Pode existir como legado/local.
-  A camada canonica de runtime atual fica em `repos/factory-runtime-data/factory_runs`.
+- `requirements.txt`: dependia do runner Python legado.
+- `examples/`: substituido por exemplos canonicos em `repos/factory-control-plane/examples` e `repos/factory-contracts/examples`.
+- `schemas/`: substituido por contratos canonicos em `repos/factory-contracts/schemas`.
+- `factory_runs/`: substituido por `repos/factory-runtime-data/factory_runs`.
 
 ## Repos internos que a factory le e escreve
 
@@ -483,26 +772,22 @@ Analisa ai o sistema e melhora tudo.
 | `contracts` | `repos/factory-contracts` | schemas e contratos de comunicacao | sim | raramente |
 | `params` | `repos/factory-params` | repos map, toggles, profiles, fallbacks | sim | raramente |
 | `architecture_reference` | `repos/architecture-reference` | guardrails, patterns, referencias de arquitetura | sim | nao |
-| `skills_reference` | `repos/skills-reference` | espelho/referencia de playbooks | sim | so quando sincronizando espelho |
 | `refinement_support` | `repos/refinement-support` | apoio para intake e brief | sim | ocasional |
-| `memory_knowledge` | `repos/factory-memory-knowledge` | memoria, knowledge, skills, promotions | sim | sim |
+| `memory_knowledge` | `repos/factory-memory-knowledge` | memoria, knowledge, registry de skills, promotions | sim | sim |
 | `runtime_data` | `repos/factory-runtime-data` | tracking, state, metrics, artifacts | sim | sim |
 | `target_repos` | `repos/project-target-repos` | repos reais ou templates do projeto-alvo | sim | sim |
 
-### Observacao importante sobre `playbooks/packages` vs `repos/skills-reference/packages`
+### Observacao importante sobre playbooks canonicos
 
-Hoje existem duas arvores parecidas:
+Hoje existe uma unica fonte local para agents/playbooks:
 
 - `playbooks/packages`
-- `repos/skills-reference/packages`
 
-A regra correta e:
+Regra atual:
 
-- `playbooks/packages` = **fonte canonica**
-- `repos/skills-reference/packages` = **espelho/referencia**
-
-Se voce alterar um playbook canonico, sincronize o espelho.
-O runtime nao deveria usar `skills-reference` como fonte principal.
+- `playbooks/packages` = **fonte canonica local**
+- os playbooks devem ser cadastrados/inseridos no Devin a partir dessa fonte
+- o antigo espelho local de playbooks foi removido para evitar divergencia
 
 ## Onde cada camada deve estar
 
@@ -517,7 +802,6 @@ Relativo a raiz do workspace:
 |  |- factory-contracts/
 |  |- factory-params/
 |  |- architecture-reference/
-|  |- skills-reference/
 |  |- refinement-support/
 |  |- factory-memory-knowledge/
 |  |- factory-runtime-data/
@@ -583,14 +867,16 @@ Use isso em documentacao, configuracao local e referencias humanas dentro do rep
 - `repos/factory-contracts`
 - `repos/factory-params`
 - `repos/architecture-reference`
+- `repos/factory-memory-knowledge`
 - `playbooks/packages`
 
 ### Lidas dependendo da etapa
 
 - `repos/refinement-support` em `P0/P1`
 - `repos/project-target-repos` em `P2/P3/P4/P5`
-- `repos/factory-memory-knowledge` em `P1/P2/P6`
 - `repos/factory-runtime-data` em praticamente todas as etapas
+
+Observacao: `repos/factory-memory-knowledge` e lido por todos como referencia possivel de memoria, knowledge e registry de skills, mas a escrita institucional concentrada continua em `P6` e nos agents de learning/promocao.
 
 ## Pastas que os agents normalmente escrevem
 
@@ -639,16 +925,44 @@ Uso esperado:
 - `SubagentResult`: specialist -> stage orchestrator
 - `CoordinatorOutput`: stage orchestrator -> root
 
+### Auditoria de redundancia de schemas
+
+Estado atual:
+
+- `repos/factory-contracts/schemas/` e a fonte canonica nova.
+- `repos/factory-contracts/schemas/envelope/`, `pipeline/` e `state/` sao os contratos que os coordinators e agents devem usar em runtime.
+- `schemas/` na raiz foi removido.
+- a copia arquivada dos contratos Python legados tambem foi removida.
+
+Redundancia eliminada:
+
+- os 43 schemas legados da raiz foram removidos;
+- a copia arquivada desses mesmos contratos foi removida;
+- a factory agora tem uma unica fonte de contratos: `repos/factory-contracts/schemas`.
+
+Regra operacional:
+
+- novos playbooks nao devem apontar para `schemas/` na raiz;
+- novos coordinators nao devem recriar ou usar pastas legadas de contratos Python;
+- se um contrato antigo ainda for util como referencia de formato, primeiro promova ou reescreva para `repos/factory-contracts/schemas/envelope`, `pipeline` ou `state`;
+- nao recrie pastas legadas para contratos.
+
+Minha recomendacao:
+
+- criar novos schemas somente em `repos/factory-contracts/schemas/...`;
+- quando precisar recuperar um formato antigo, use historico de git ou promova o contrato para a estrutura canonica antes de referencia-lo.
+
 ## Boas praticas operacionais
 
 1. **Edite a fonte canonica**
-   Mude primeiro `playbooks/packages`, nao `skills-reference`.
+   Mude `playbooks/packages`.
 
-2. **Sincronize o espelho**
-   Se `skills-reference` continuar existindo, mantenha paridade com a arvore canonica.
+2. **Atualize o Devin quando playbooks mudarem**
+   Como nao existe mais espelho local, a fonte para cadastrar/atualizar no Devin e `playbooks/packages`.
 
 3. **Quebre tasks sempre**
    Child sessions devem receber trabalho pequeno e objetivo.
+   Isso nao significa fazer poucas tasks; significa fazer quantas tasks pequenas forem necessarias.
 
 4. **Nao pule debate**
    Se houver ambiguidade material, faca debate interno antes de pedir ajuda humana.
@@ -668,13 +982,20 @@ Uso esperado:
 9. **Nao trate `P6` como opcional**
    Learning e parte do fechamento oficial da run.
 
+10. **Nao encerre `P3` com task pendente**
+    `P3.done` exige `tasks_projected == tasks_executed_and_accepted` e `pending_tasks_final` vazio.
+
+11. **Preserve contexto entre builders**
+    Use `context_packet`, `context_updates`, `integration_impacts` e `context_ledger_ref`.
+
 ## Erros comuns
 
-### Erro 1: usar `skills-reference` como fonte principal
+### Erro 1: recriar espelho local de playbooks
 
 Correto:
 
-- usar `playbooks/packages` como fonte canonica
+- usar `playbooks/packages` como fonte canonica local
+- cadastrar/inserir os playbooks diretamente no Devin
 
 ### Erro 2: mandar task grande para specialist
 
@@ -717,9 +1038,10 @@ Antes de iniciar:
 2. `.env` foi preenchido
 3. `repos/factory-params/params/repos.json` aponta para as pastas certas
 4. `playbooks/packages` esta atualizado
-5. `repos/skills-reference/packages` foi sincronizado se o espelho estiver sendo mantido
+5. os playbooks atualizados foram cadastrados/inseridos no Devin quando necessario
 6. `architecture-reference` esta acessivel
-7. `project-target-repos` contem o repo-alvo correto
+7. `repos/factory-memory-knowledge/skills/skill_registry.json` esta coerente com as skills disponiveis
+8. `project-target-repos` contem o repo-alvo correto
 
 ## Checklist rapido para manter o projeto
 
@@ -729,7 +1051,7 @@ Ao evoluir a factory:
 2. ajuste schemas se o envelope mudou
 3. ajuste policies se a regra mudou
 4. ajuste params/config se o runtime mudou
-5. sincronize `skills-reference`
+5. atualize os playbooks no Devin quando necessario
 6. atualize esta documentacao quando a operacao mudar
 
 ## Arquivos mais importantes do projeto
@@ -745,8 +1067,12 @@ Ao evoluir a factory:
 - `repos/factory-control-plane/policies/quorum_and_escalation_policy.md`
 - `repos/factory-control-plane/docs/SCHEDULER_AND_DAG.md`
 - `repos/factory-contracts/schemas/envelope/*.json`
+- `repos/factory-contracts/schemas/state/skill_registry.schema.json`
 - `repos/factory-params/params/repos.json`
 - `repos/factory-params/params/repos_fallback.json`
+- `repos/factory-memory-knowledge/memory/`
+- `repos/factory-memory-knowledge/knowledge/`
+- `repos/factory-memory-knowledge/skills/skill_registry.json`
 - `repos/READMEGeral.md`
 
 ## Resumo final
@@ -759,6 +1085,6 @@ Se voce quiser lembrar o projeto em poucas linhas:
 - cada specialist recebe task pequena e com schema
 - debates internos acontecem antes de escalacao
 - `P2` sai com Mermaid funcional e tecnico
-- `P3` respeita ownership claro de codigo vs testes
+- `P3` respeita ownership claro de codigo vs testes, preserva contexto entre builders e so fecha quando todas as tasks projetadas terminam
 - `P6` fecha a run com learning obrigatorio
 - tudo importante precisa ser persistido nos repos corretos

@@ -1,4 +1,4 @@
-# Prompt Normalizer (V5)
+﻿# Prompt Normalizer (V5)
 
 ## Papel
 Transformar a solicitacao inicial do usuario em um **artefato canonico de intake** estruturado e pronto para alimentar a geracao de spec de `P0`.
@@ -64,16 +64,19 @@ Em caso de conflito, aplique esta ordem:
 Se duas fontes de maior prioridade entrarem em conflito material e nao houver reconciliacao conservadora segura, retorne `status=blocked`.
 
 ## Contexto disponivel
-- [SKILL/FILE] SKILL_REGISTRY: `/workspace/.agents/skills/`
+- [SKILL/FILE] DEVIN_SKILL_REGISTRY: `/workspace/.agents/skills/`
+- [FILE] FACTORY_SKILL_REGISTRY: `/workspace/repos/factory-memory-knowledge/skills/skill_registry.json`
+- [FILE] FACTORY_MEMORY_ROOT: `/workspace/repos/factory-memory-knowledge/memory/`
+- [FILE] FACTORY_KNOWLEDGE_ROOT: `/workspace/repos/factory-memory-knowledge/knowledge/`
 - [SKILL/FILE] ARR_REFERENCE_INDEX: `/workspace/architecture-reference/INDEX.md`
 - [SKILL/FILE] ARR_GUARDRAILS: `/workspace/architecture-reference/guardrails/`
 - [SKILL/FILE] ARR_PATTERNS: `/workspace/architecture-reference/patterns/`
 - [SKILL/FILE] ARR_DOMAIN_PROFILE: `/workspace/architecture-reference/domains/{domain_slug}.md`
+- [FILE] ARR_REFERENCE_REPO_FALLBACK_ROOT: `/workspace/repos/architecture-reference/`
 - [FILE] REPO_MAP_PRIMARY: `/workspace/repos/factory-params/params/repos.json`
 - [FILE] REPO_MAP_FALLBACK: `/workspace/repos/factory-params/params/repos_fallback.json`
 - [FILE] REFINEMENT_SUPPORT_ROOT: `/workspace/repos/refinement-support/`
 - [FILE] REFINEMENT_INTAKE_TEMPLATE: `/workspace/repos/refinement-support/prompt_starters/intake_seed_template.md`
-- [FILE] SKILLS_REFERENCE_ROOT: `/workspace/repos/skills-reference/`
 - [SCHEMA] COORDINATOR_INPUT: `/workspace/repos/factory-contracts/schemas/envelope/coordinator_input.schema.json`
 - [SCHEMA] SUBAGENT_TASK: `/workspace/repos/factory-contracts/schemas/envelope/subagent_task.schema.json`
 - [SCHEMA] SUBAGENT_RESULT: `/workspace/repos/factory-contracts/schemas/envelope/subagent_result.schema.json`

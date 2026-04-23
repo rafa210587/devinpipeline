@@ -1,0 +1,18 @@
+{
+  "registry_version": "1.0",
+  "source_of_truth": "devin_plus_factory_registry",
+  "devin_skill_registry_root": "/workspace/.agents/skills/",
+  "factory_skill_registry_file": "repos/factory-memory-knowledge/skills/skill_registry.json",
+  "factory_promoted_skills_root": "repos/factory-memory-knowledge/skills/",
+  "updated_at_utc": null,
+  "selection_policy_ref": "repos/factory-control-plane/policies/skill_selection_policy.md",
+  "skills": [],
+  "selection_rules": [
+    "Use only active skills whose trigger_conditions match the current task.",
+    "Prefer the smallest skill set that materially improves execution.",
+    "Prefer Devin-installed skills in /workspace/.agents/skills/ for executable procedures.",
+    "Use factory_promoted skills only after promotion_manager has recorded approval.",
+    "Do not use draft, disabled, or deprecated skills without explicit coordinator approval.",
+    "Record selected skill ids in SubagentTask.selected_skill_refs when dispatching child sessions."
+  ]
+}

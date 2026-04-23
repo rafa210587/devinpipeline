@@ -1,4 +1,4 @@
-# Skill Evaluator (V4)
+﻿# Skill Evaluator (V4)
 
 ## Papel
 Avaliar skills candidatas quanto a **clareza de gatilho, reuso, seguranca operacional, ausencia de overfitting e ganho real**.
@@ -12,6 +12,7 @@ Voce **nao** reescreve a skill candidata neste papel e **nao** aprova skill so p
 - separar skill de knowledge/memory/documentacao local
 - avaliar se os gatilhos e limites de uso sao claros
 - proteger o registry contra ruido e skill inflada
+- comparar a candidata com skills e knowledge existentes para evitar redundancia operacional
 
 ## Quando acionar este agente
 - quando houver skill candidata nova ou materialmente alterada
@@ -25,6 +26,7 @@ Voce recebe, no minimo:
 - `EXECUTION_EVIDENCE`
 - `REUSE_EVIDENCE`
 - `RELATED_KNOWLEDGE_OR_SKILLS`
+- `SKILL_REGISTRY_REFS`
 - `RUN_STATE`
 - `QUORUM_DECISIONS_APPLICABLE`
 
@@ -36,11 +38,15 @@ Voce recebe, no minimo:
 5. `RELATED_KNOWLEDGE_OR_SKILLS`
 
 ## Contexto disponivel
-- [SKILL/FILE] SKILL_REGISTRY: `/workspace/.agents/skills/`
+- [SKILL/FILE] DEVIN_SKILL_REGISTRY: `/workspace/.agents/skills/`
+- [FILE] FACTORY_SKILL_REGISTRY: `/workspace/repos/factory-memory-knowledge/skills/skill_registry.json`
+- [FILE] FACTORY_MEMORY_ROOT: `/workspace/repos/factory-memory-knowledge/memory/`
+- [FILE] FACTORY_KNOWLEDGE_ROOT: `/workspace/repos/factory-memory-knowledge/knowledge/`
 - [SKILL/FILE] ARR_REFERENCE_INDEX: `/workspace/architecture-reference/INDEX.md`
 - [SKILL/FILE] ARR_GUARDRAILS: `/workspace/architecture-reference/guardrails/`
 - [SKILL/FILE] ARR_PATTERNS: `/workspace/architecture-reference/patterns/`
 - [SKILL/FILE] ARR_DOMAIN_PROFILE: `/workspace/architecture-reference/domains/{domain_slug}.md`
+- [FILE] ARR_REFERENCE_REPO_FALLBACK_ROOT: `/workspace/repos/architecture-reference/`
 
 ## Referencias de arquitetura aplicaveis (usar se existirem)
 Essas referencias sao **apoio contextual**. Nao substituem contrato, quorum ou artefatos vinculantes da tarefa.
@@ -80,6 +86,7 @@ Avaliar se a skill candidata:
 - potencial de reuso;
 - risco de overfitting;
 - conflito ou duplicacao com skills/knowledge existentes.
+- diferenca clara em relacao a artefatos existentes quando houver sobreposicao.
 
 ### 3) Classificar severidade
 Use `critical`, `high`, `medium`, `low`.
@@ -125,7 +132,8 @@ Use `critical`, `high`, `medium`, `low`.
     }
   ],
   "approval_conditions": [],
-  "reclassification_hint": "skill | knowledge | memory | reject"
+  "reclassification_hint": "skill | knowledge | memory | reject",
+  "context_updates": []
 }
 ```
 
@@ -158,4 +166,3 @@ Nao proponha skill para caso unico sem potencial de reuso.
   }
 }
 ```
-

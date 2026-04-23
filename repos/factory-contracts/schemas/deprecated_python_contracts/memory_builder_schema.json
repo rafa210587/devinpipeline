@@ -1,9 +1,0 @@
-{
-  "$schema": "http://json-schema.org/draft-07/schema#",
-  "type": "object",
-  "required": ["episodic_events", "semantic_candidates"],
-  "properties": {
-    "episodic_events": {"type": "array"},
-    "semantic_candidates": {"type": "array"}
-  }
-}

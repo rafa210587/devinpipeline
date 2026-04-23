@@ -1,4 +1,4 @@
-# Judge Quorum (V4)
+﻿# Judge Quorum (V4)
 
 ## Papel
 Decidir conflitos tecnicos materiais com criterio, evidencia, precedencia entre fontes e rastreabilidade de decisao.
@@ -39,11 +39,15 @@ Voce recebe, no minimo:
 6. `PROJECT_MEMORY` (quando existir e nao conflitar)
 
 ## Contexto disponivel
-- [SKILL/FILE] SKILL_REGISTRY: `/workspace/.agents/skills/`
+- [SKILL/FILE] DEVIN_SKILL_REGISTRY: `/workspace/.agents/skills/`
+- [FILE] FACTORY_SKILL_REGISTRY: `/workspace/repos/factory-memory-knowledge/skills/skill_registry.json`
+- [FILE] FACTORY_MEMORY_ROOT: `/workspace/repos/factory-memory-knowledge/memory/`
+- [FILE] FACTORY_KNOWLEDGE_ROOT: `/workspace/repos/factory-memory-knowledge/knowledge/`
 - [SKILL/FILE] ARR_REFERENCE_INDEX: `/workspace/architecture-reference/INDEX.md`
 - [SKILL/FILE] ARR_GUARDRAILS: `/workspace/architecture-reference/guardrails/`
 - [SKILL/FILE] ARR_PATTERNS: `/workspace/architecture-reference/patterns/`
 - [SKILL/FILE] ARR_DOMAIN_PROFILE: `/workspace/architecture-reference/domains/{domain_slug}.md`
+- [FILE] ARR_REFERENCE_REPO_FALLBACK_ROOT: `/workspace/repos/architecture-reference/`
 
 ## Referencias de arquitetura aplicaveis (usar se existirem)
 Essas referencias sao **apoio contextual**. Nao substituem contrato, quorum ou artefatos vinculantes da tarefa.

@@ -14,6 +14,63 @@
       "type": "array",
       "items": {"type": "string"}
     },
+    "skill_registry_ref": {"type": ["string", "null"]},
+    "selected_skill_refs": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "skill_selection_notes": {"type": ["string", "null"]},
+    "memory_refs": {
+      "type": "array",
+      "description": "Specific memory files, records, or summaries the subagent should consider. Empty means no memory is required for the task.",
+      "items": {"type": "string"}
+    },
+    "knowledge_refs": {
+      "type": "array",
+      "description": "Specific knowledge files, candidates, or institutional rules the subagent should consider. Empty means no knowledge is required for the task.",
+      "items": {"type": "string"}
+    },
+    "architecture_reference_refs": {
+      "type": "array",
+      "description": "Specific architecture-reference docs, guardrails, patterns, or domain profiles relevant to the task.",
+      "items": {"type": "string"}
+    },
+    "context_packet": {
+      "type": "object",
+      "description": "Compact context needed to execute a small task without losing cross-task continuity.",
+      "properties": {
+        "task_slice_size_rule": {"type": "string"},
+        "target_repo_alias": {"type": ["string", "null"]},
+        "target_workspace_root": {"type": ["string", "null"]},
+        "target_files": {
+          "type": "array",
+          "items": {"type": "string"}
+        },
+        "current_repo_state_refs": {
+          "type": "array",
+          "items": {"type": "string"}
+        },
+        "upstream_task_refs": {
+          "type": "array",
+          "items": {"type": "string"}
+        },
+        "upstream_outputs_summary": {
+          "type": "array",
+          "items": {"type": "string"}
+        },
+        "related_task_refs": {
+          "type": "array",
+          "items": {"type": "string"}
+        },
+        "known_integration_impacts": {
+          "type": "array",
+          "items": {"type": "string"}
+        },
+        "workspace_diff_summary_ref": {"type": ["string", "null"]},
+        "context_ledger_ref": {"type": ["string", "null"]}
+      },
+      "additionalProperties": true
+    },
     "dependencies": {
       "type": "array",
       "items": {"type": "string"}
